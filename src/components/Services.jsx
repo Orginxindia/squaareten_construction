@@ -148,7 +148,14 @@ export default function FutureProjects() {
               {/* Image Container */}
               <div className="services-new__card-img-container" style={{ position: 'relative', width: '100%', height: '160px', overflow: 'visible', marginBottom: '1.5rem' }}>
                 <div style={{ width: '100%', height: '100%', overflow: 'hidden', borderRadius: '4px' }}>
-                  <img src={s.image} alt={s.title} className="category-card-img" style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }} />
+                  <img 
+                    src={s.image} 
+                    alt={s.title} 
+                    className="category-card-img" 
+                    style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'transform 0.4s ease' }} 
+                    loading="lazy" 
+                    decoding="async" 
+                  />
                 </div>
                 {/* Overlapping Badge Icon */}
                 <div className="category-card-badge-icon" style={{ position: 'absolute', bottom: '-15px', left: '15px', width: '42px', height: '42px', backgroundColor: '#FFFFFF', borderRadius: '6px', display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '0 4px 10px rgba(0,0,0,0.12)', border: '1px solid rgba(0,0,0,0.06)', zIndex: 10 }}>

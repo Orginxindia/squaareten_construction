@@ -1,8 +1,8 @@
 /* ============================================================
    CURSOR — Custom Premium Cursor (Desktop Only)
+   Direct DOM version with requestAnimationFrame for maximum fluidity
    ============================================================ */
 import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
 
 export default function CustomCursor() {
   const dotRef = useRef(null);
@@ -20,7 +20,7 @@ export default function CustomCursor() {
     // Add class to body to hide default cursor
     document.body.classList.add('has-custom-cursor');
 
-    // Create inline styles for cursors dynamically or rely on base.css / theme-toggle.css styles
+    // Create inline styles for cursors dynamically
     const style = document.createElement('style');
     style.id = 'custom-cursor-style';
     style.textContent = `
@@ -36,6 +36,7 @@ export default function CustomCursor() {
         z-index: 99999;
         transform: translate(-50%, -50%);
         will-change: transform;
+        transition: opacity 0.2s var(--ease-out-expo);
       }
       
       .cursor-circle {
@@ -82,6 +83,7 @@ export default function CustomCursor() {
     let mouseY = null;
     let circleX = null;
     let circleY = null;
+    let rafId = null;
 
     const onMouseMove = (e) => {
       const isFirstMove = mouseX === null;
@@ -92,24 +94,30 @@ export default function CustomCursor() {
         circleX = mouseX;
         circleY = mouseY;
         if (circleRef.current) {
-          gsap.set(circleRef.current, { x: circleX, y: circleY });
+          circleRef.current.style.transform = `translate3d(${circleX}px, ${circleY}px, 0) translate(-50%, -50%)`;
         }
       }
       
       setIsVisible(true);
-      // Dot follows immediately
       if (dotRef.current) {
-        gsap.set(dotRef.current, { x: mouseX, y: mouseY });
+        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        dotRef.current.style.opacity = '1';
+      }
+      if (circleRef.current) {
+        circleRef.current.style.opacity = isHovering ? '0.6' : '0.4';
       }
     };
 
-    const tickerCallback = () => {
-      if (mouseX === null || circleX === null) return;
-      circleX += (mouseX - circleX) * 0.15;
-      circleY += (mouseY - circleY) * 0.15;
-      if (circleRef.current) {
-        gsap.set(circleRef.current, { x: circleX, y: circleY });
+    const updateCirclePosition = () => {
+      if (mouseX !== null && circleX !== null) {
+        // Easing interpolation
+        circleX += (mouseX - circleX) * 0.15;
+        circleY += (mouseY - circleY) * 0.15;
+        if (circleRef.current) {
+          circleRef.current.style.transform = `translate3d(${circleX}px, ${circleY}px, 0) translate(-50%, -50%)`;
+        }
       }
+      rafId = requestAnimationFrame(updateCirclePosition);
     };
 
     // Global listener for hover targets (delegated)
@@ -135,15 +143,18 @@ export default function CustomCursor() {
 
     const onMouseDown = () => setIsClicking(true);
     const onMouseUp = () => setIsClicking(false);
+    
     const onMouseLeave = () => {
       setIsVisible(false);
-      gsap.to([dotRef.current, circleRef.current], { opacity: 0, duration: 0.2 });
+      if (dotRef.current) dotRef.current.style.opacity = '0';
+      if (circleRef.current) circleRef.current.style.opacity = '0';
     };
+    
     const onMouseEnter = () => {
       if (mouseX !== null) {
         setIsVisible(true);
-        gsap.to(dotRef.current, { opacity: 1, duration: 0.2 });
-        gsap.to(circleRef.current, { opacity: 0.4, duration: 0.2 });
+        if (dotRef.current) dotRef.current.style.opacity = '1';
+        if (circleRef.current) circleRef.current.style.opacity = isHovering ? '0.6' : '0.4';
       }
     };
 
@@ -155,7 +166,7 @@ export default function CustomCursor() {
     document.addEventListener('mouseleave', onMouseLeave);
     document.addEventListener('mouseenter', onMouseEnter);
 
-    gsap.ticker.add(tickerCallback);
+    rafId = requestAnimationFrame(updateCirclePosition);
 
     return () => {
       document.body.classList.remove('has-custom-cursor');
@@ -170,21 +181,23 @@ export default function CustomCursor() {
       document.removeEventListener('mouseleave', onMouseLeave);
       document.removeEventListener('mouseenter', onMouseEnter);
 
-      gsap.ticker.remove(tickerCallback);
+      if (rafId) {
+        cancelAnimationFrame(rafId);
+      }
     };
-  }, []);
+  }, [isHovering]);
 
   return (
     <>
       <div
         ref={dotRef}
         className="cursor-dot"
-        style={{ display: isVisible ? 'block' : 'none' }}
+        style={{ display: isVisible ? 'block' : 'none', opacity: 0 }}
       />
       <div
         ref={circleRef}
         className={`cursor-circle ${isHovering ? 'is-hovering' : ''} ${isClicking ? 'is-clicking' : ''}`}
-        style={{ display: isVisible ? 'block' : 'none' }}
+        style={{ display: isVisible ? 'block' : 'none', opacity: 0 }}
       />
     </>
   );

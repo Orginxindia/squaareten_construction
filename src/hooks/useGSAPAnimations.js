@@ -184,77 +184,77 @@ export function useOnboardingAnimation(onboardingRef, onExitStart, onComplete) {
         opacity: (i) => 0.2 + Math.random() * 0.5,
         x: () => (Math.random() - 0.5) * 300,
         y: () => (Math.random() - 0.5) * 300,
-        duration: 1.5,
-        stagger: 0.05,
+        duration: 1.0,
+        stagger: 0.03,
         ease: 'power2.out',
       }, 0);
 
       // Progress bar fills
       tl.to(progressBar, {
         width: '100%',
-        duration: 3.2,
+        duration: 1.8,
         ease: 'power1.inOut',
       }, 0);
 
       // Phase 2: Corner decorations
       tl.to(corners, {
         opacity: 0.3,
-        duration: 0.6,
-        stagger: 0.1,
+        duration: 0.4,
+        stagger: 0.08,
         ease: 'power2.out',
-      }, 0.3);
+      }, 0.2);
 
       // Phase 3: Golden glow pulse
       tl.to(glow, {
         opacity: 0.6,
-        scale: 1.2,
-        duration: 1.5,
+        scale: 1.15,
+        duration: 0.8,
         ease: 'power2.inOut',
-      }, 0.5);
+      }, 0.3);
 
       tl.to(glow, {
         opacity: 0.3,
         scale: 1,
-        duration: 1,
+        duration: 0.6,
         ease: 'power2.inOut',
-      }, 2);
+      }, 1.0);
 
       // Phase 4: Logo reveal
       tl.to(logo, {
         opacity: 1,
         scale: 1,
         rotation: 0,
-        duration: 1.2,
+        duration: 0.8,
         ease: 'expo.out',
-      }, 0.8);
+      }, 0.4);
 
       // Phase 5: Company name
       tl.to(name, {
         opacity: 1,
         y: 0,
-        duration: 0.8,
+        duration: 0.6,
         ease: 'expo.out',
-      }, 1.8);
+      }, 1.0);
 
       // Phase 6: Tagline
       tl.to(tagline, {
         opacity: 1,
         y: 0,
-        duration: 0.7,
+        duration: 0.5,
         ease: 'power3.out',
-      }, 2.3);
+      }, 1.3);
 
       // Phase 7: Exit
       tl.to(el, {
         y: '-100%',
-        duration: 0.8,
+        duration: 0.6,
         ease: 'expo.inOut',
-        delay: 0.2,
+        delay: 0.1,
         onStart: () => {
           document.documentElement.classList.remove('is-loading');
           onExitStart?.();
         }
-      }, 3.2);
+      }, 1.8);
     }, el);
 
     return () => ctx.revert();

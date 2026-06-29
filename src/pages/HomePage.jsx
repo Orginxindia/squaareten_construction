@@ -29,14 +29,18 @@ export default function HomePage({ isEstimatorOpen, setIsEstimatorOpen }) {
         <Navbar isVisible={onboardingComplete} />
         <main>
           <Hero isReady={onboardingComplete} onOpenEstimator={() => setIsEstimatorOpen(true)} />
-          <FutureProjects />
-          <PlotsShowcase />
-          <TamilNaduExplorer />
-          <FranchiseCTA />
-          <Testimonials />
-          <Contact />
+          {onboardingComplete && (
+            <>
+              <FutureProjects />
+              <PlotsShowcase />
+              <TamilNaduExplorer />
+              <FranchiseCTA />
+              <Testimonials />
+              <Contact />
+            </>
+          )}
         </main>
-        <Footer />
+        {onboardingComplete && <Footer />}
       </div>
 
       {/* Estimator Modal */}

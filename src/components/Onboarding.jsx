@@ -1,16 +1,28 @@
 /* ============================================================
    ONBOARDING — Cinematic Logo Reveal
    ============================================================ */
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { useOnboardingAnimation } from '../hooks/useGSAPAnimations';
 
 export default function Onboarding({ onComplete }) {
-  const [visible, setVisible] = useState(true);
+  const [visible, setVisible] = useState(() => {
+    // Return false (hidden) if the user has already visited
+    return localStorage.getItem('has_onboarded') !== 'true';
+  });
   const onboardingRef = useRef(null);
 
+  useEffect(() => {
+    // If user has already onboarded, trigger completion immediately
+    if (localStorage.getItem('has_onboarded') === 'true') {
+      onComplete?.();
+      document.documentElement.classList.remove('is-loading');
+    }
+  }, [onComplete]);
+
   useOnboardingAnimation(
-    onboardingRef,
+    visible ? onboardingRef : { current: null },
     () => {
+      localStorage.setItem('has_onboarded', 'true');
       onComplete?.();
     },
     () => {

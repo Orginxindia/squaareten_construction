@@ -73,6 +73,8 @@ export default function PlotsShowcase() {
               src="/assets/images/plots-slide-1.png" 
               alt="Invest In Land - Gated Communities & Strategic Land" 
               className="plots-showcase__bg-img-active"
+              loading="lazy"
+              decoding="async"
             />
           </Link>
           <div className="plots-showcase__bg-blueprint-lines"></div>

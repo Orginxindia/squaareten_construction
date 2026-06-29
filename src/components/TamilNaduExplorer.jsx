@@ -194,7 +194,34 @@ export default function TamilNaduExplorer() {
   const [activeDistrictId, setActiveDistrictId] = useState('madurai-hq'); // HQ is default
   const [searchQuery, setSearchQuery] = useState('');
   const [statusFilter, setStatusFilter] = useState('all');
+  const [isMapVisible, setIsMapVisible] = useState(false);
   const sectionRef = useRef(null);
+
+  // Lazy render the heavy Leaflet Map on viewport intersection
+  useEffect(() => {
+    if (typeof window === 'undefined' || !('IntersectionObserver' in window)) {
+      setIsMapVisible(true);
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsMapVisible(true);
+          observer.disconnect();
+        }
+      },
+      { rootMargin: '300px 0px' } // Load map 300px before it enters the viewport
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
 
   // Filter locations based on search query and active tab filter
   const filteredLocations = DISTRICTS_DATA.filter(d => {
@@ -300,11 +327,43 @@ export default function TamilNaduExplorer() {
       <div className="tn-explorer__inner">
         {/* Left Side: Leaflet Locator Map */}
         <div className="tn-map-layout-wrapper">
-          <TamilNaduMap 
-            districts={filteredLocations} 
-            activeDistrict={activeDistrictId}
-            onSelectDistrict={setActiveDistrictId}
-          />
+          {isMapVisible ? (
+            <TamilNaduMap 
+              districts={filteredLocations} 
+              activeDistrict={activeDistrictId}
+              onSelectDistrict={setActiveDistrictId}
+            />
+          ) : (
+            <div className="tn-map-wrapper" style={{ minHeight: '450px' }}>
+              <style>{`
+                @keyframes tnSpinnerSpin {
+                  0% { transform: rotate(0deg); }
+                  100% { transform: rotate(360deg); }
+                }
+              `}</style>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{
+                  width: '40px',
+                  height: '40px',
+                  border: '2px solid rgba(201, 168, 106, 0.15)',
+                  borderTop: '2px solid var(--color-accent)',
+                  borderRadius: '50%',
+                  margin: '0 auto 16px',
+                  animation: 'tnSpinnerSpin 0.8s linear infinite'
+                }} />
+                <span style={{ 
+                  color: 'var(--color-accent)', 
+                  fontFamily: 'var(--font-sans)', 
+                  fontSize: '0.875rem', 
+                  letterSpacing: 'var(--ls-wide)',
+                  textTransform: 'uppercase',
+                  opacity: 0.8
+                }}>
+                  Loading Interactive Map...
+                </span>
+              </div>
+            </div>
+          )}
           
           {/* Custom Colored Pins Legend */}
           <div className="tn-presence-legend">

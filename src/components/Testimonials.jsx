@@ -1,5 +1,5 @@
 /* ============================================================
-   TESTIMONIALS — Real-Time Google Reviews via Places API
+   TESTIMONIALS — Verified Google Reviews (Curated & Performance Optimized)
    ============================================================ */
 import { useEffect, useState, useRef } from 'react';
 import gsap from 'gsap';
@@ -7,182 +7,233 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-// 1. LOCAL REVIEWS FALLBACK & SEED DATA (Actual reviews parsed from profiles)
+// 1. CURATED GOOGLE REVIEWS DATA (Pasted original reviews)
 const localTestimonials = [
   {
-    text: 'Squaareten Construction provides excellent repair and services. Their quick service is truly impressive, and they always deliver top-notch results. The team is professional, efficient, and always goes above and beyond to ensure customer satisfaction. I highly recommend Squaareten Construction!',
-    avatar: 'H',
-    name: 'Harish',
-    role: 'Client, Arapalayam',
+    name: "Viswanth Kanthapandiyan",
+    text: "working with srini and praveen is good and their service and timing is real,ly good",
+    avatar: "V",
+    role: "Google Reviewer",
     rating: 5,
-    date: '9th July, 2024',
-    url: 'https://www.justdial.com/Madurai/Squaareten-Construction-Arapalayam/0452P4525STD240001_BZDET'
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
   },
   {
-    text: 'Squaareten Construction offers excellent repair and service. Their easily understandable quotation process makes it simple to get the work done without any confusion. Highly professional and trustworthy!',
-    avatar: 'K',
-    name: 'Kalpna',
-    role: 'Client, Madurai',
+    name: "Senthil kumar M Jeyaprakash",
+    text: "Excellent construction company with a highly knowledgeable civil engineering team and professional approach. They use cost-effective materials without compromising quality and provide creative elevation designs exactly as per client requirements.",
+    avatar: "S",
+    role: "Local Guide",
     rating: 5,
-    date: '7th July, 2024',
-    url: 'https://www.justdial.com/Madurai/Squaareten-Construction-Arapalayam/0452P4525STD240001_BZDET'
+    date: "a month ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
   },
   {
-    text: 'Their team of experts listened to my vision and transformed it into a stunning reality, exceeding my expectations. The quality of craftsmanship, materials, and timelines were all top-notch. Special thanks to Er. Srinivasan and Praveen!',
-    avatar: 'V',
-    name: 'Vishwa',
-    role: 'Homeowner, Madurai',
+    name: "Sathishkumar Palanisamy",
+    text: "Squaareten Constructions is a reliable choice for residential construction projects. The team demonstrated professionalism, good workmanship, timely completion, and proper coordination throughout the project. They maintain a strong balance of quality and cost.",
+    avatar: "S",
+    role: "Google Reviewer",
     rating: 5,
-    date: '7th July, 2024',
-    url: 'https://www.justdial.com/Madurai/Squaareten-Construction-Arapalayam/0452P4525STD240001_BZDET'
+    date: "a month ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
   },
   {
-    text: 'Best elevation work compared to others. Only best quality materials are used. Very transparent communication between the client and the construction team.',
-    avatar: 'S',
-    name: 'Sharath',
-    role: 'Client, Best Elevation Project',
+    name: "praveenkumar K P",
+    text: "Suggested for Best construction and interior works!!!",
+    avatar: "P",
+    role: "Google Reviewer",
     rating: 5,
-    date: '7th July, 2024',
-    url: 'https://www.justdial.com/Madurai/Squaareten-Construction-Arapalayam/0452P4525STD240001_BZDET'
+    date: "4 months ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
   },
   {
-    text: 'Squaareten Construction is excellent! They are very cost efficient and provide top-notch repair and services. I highly recommend them for any construction needs.',
-    avatar: 'SK',
-    name: 'Senthil Kumar',
-    role: 'Client, Madurai',
+    name: "arumugam sarath",
+    text: "Your team’s craftsmanship and dedication to detail have transformed our vision into a reality. We’re truly impressed by the quality of work and professionalism shown throughout the project.",
+    avatar: "A",
+    role: "Google Reviewer",
     rating: 5,
-    date: '7th July, 2024',
-    url: 'https://www.justdial.com/Madurai/Squaareten-Construction-Arapalayam/0452P4525STD240001_BZDET'
+    date: "a year ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
   },
   {
-    text: 'I had an excellent experience with Squaareten Construction. Their service was quick and efficient, and the prices were very reasonable. I was impressed with their professionalism and quality of work.',
-    avatar: 'GS',
-    name: 'Girish S',
-    role: 'Homeowner, Arapalayam',
+    name: "Shivang Singh",
+    text: "They are punctual and expert in their work.",
+    avatar: "S",
+    role: "Local Guide",
     rating: 5,
-    date: '7th July, 2024',
-    url: 'https://www.justdial.com/Madurai/Squaareten-Construction-Arapalayam/0452P4525STD240001_BZDET'
+    date: "4 weeks ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Siva prakash",
+    text: "Working with your company has been a pleasure from start to finish. Your professionalism, dedication, and outstanding craftsmanship are evident in every corner of the project.",
+    avatar: "S",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "a year ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "athi athithya",
+    text: "As you construct great things, may your company also build a lasting legacy of trust, quality, and excellence. Wishing you all the best!",
+    avatar: "A",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "a year ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Rajkumar T",
+    text: "Cost efficient",
+    avatar: "R",
+    role: "Local Guide",
+    rating: 5,
+    date: "a year ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "DHARANI PRASANNA G",
+    text: "Professional team, excellent quality, timely completion, and great customer support. They paid attention to every detail and delivered exactly what was promised. Highly recommended!",
+    avatar: "D",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Santhosh",
+    text: "Completed the project on time. Everything was good, didn't face any issues. I told my requirement and they completed it in a wonderful way. Happy with their work.",
+    avatar: "S",
+    role: "Local Guide",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Surya Nava",
+    text: "All time favrte teamm😍Best in all☺️",
+    avatar: "S",
+    role: "Local Guide",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "sangu servai",
+    text: "They are currently handling our construction project. I was initially very confused about how to go about it, especially given the significant length of the structure, but they designed it beautifully, and the work is now nearing completion.",
+    avatar: "S",
+    role: "Local Guide",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Kovil Papakudi",
+    text: "The team of young workers is approachable, and the staff performs excellently; the mason's workmanship, in particular, is outstanding.",
+    avatar: "K",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "sanjay servai",
+    text: "They craft it excellently—very quickly and right on time—even in instances where we might not be able to do so ourselves.",
+    avatar: "S",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "sangu servai",
+    text: "With the selection of the right materials and high-quality components, featuring a perfect structural design.",
+    avatar: "S",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "samayanallur panjayat",
+    text: "They are easily approachable and work in a very friendly manner.",
+    avatar: "S",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Sakul hameed",
+    text: "They kept their commitment and completed the work within the given timeline without any compromise in quality.we loved their work ❤️",
+    avatar: "S",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Akbar Basha",
+    text: "Best place in madurai for all your construction needs.",
+    avatar: "A",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Alagappan",
+    text: "Five stars for SquareTen Construction! Here is why I highly recommend them: Budget-Friendly: Premium interior design options at very reasonable rates. Professional Work: Stunning design concepts and flawless execution. Timely Output: They delivered exactly what was promised.",
+    avatar: "A",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Gokul Raj",
+    text: "Super",
+    avatar: "G",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "MNG Dhanush",
+    text: "The finished project looks amazing, and we have received many compliments on the workmanship Praveen and Srini. Looking forward to plan another project with you guys.",
+    avatar: "M",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "Fathima azise",
+    text: "Nice work neat finishing performance is very good...",
+    avatar: "F",
+    role: "Google Reviewer",
+    rating: 5,
+    date: "Recent Review",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
+  },
+  {
+    name: "MOHAMMED GANI",
+    text: "They never compromise the quality of works. They are having end to end experience about construction.",
+    avatar: "M",
+    role: "Local Guide",
+    rating: 5,
+    date: "a month ago",
+    url: "https://www.google.com/maps/place/Squaareten+Construction+Pvt+Ltd/@9.9252,78.1198,17z"
   }
 ];
 
-const CACHE_KEY = 'squaareten_google_reviews_cache';
-const CACHE_EXPIRY = 1000 * 60 * 60 * 24; // 24 Hours Cache
-
 export default function Testimonials() {
   const containerRef = useRef(null);
-  const [reviews, setReviews] = useState(localTestimonials);
-  const [overallRating, setOverallRating] = useState(4.9);
-  const [totalReviews, setTotalReviews] = useState(22);
+  const [reviews] = useState(localTestimonials);
+  const [overallRating] = useState(4.9);
+  const [totalReviews] = useState(65);
 
-  // Helper: Format Date from timestamp
-  const formatDate = (timestamp) => {
-    if (!timestamp) return 'Recent Review';
-    const date = new Date(timestamp);
-    return date.toLocaleDateString('en-US', {
-      day: 'numeric',
-      month: 'long',
-      year: 'numeric'
-    });
-  };
-
-  useEffect(() => {
-    // 2. CHECK CACHE FIRST
-    const cachedData = localStorage.getItem(CACHE_KEY);
-    if (cachedData) {
-      try {
-        const { timestamp, data } = JSON.parse(cachedData);
-        if (Date.now() - timestamp < CACHE_EXPIRY) {
-          setReviews(data.reviews);
-          setOverallRating(data.overallRating);
-          setTotalReviews(data.totalReviews);
-          return; // Skip script load, cache is fresh
-        }
-      } catch (err) {
-        console.warn("Error reading reviews cache:", err);
-      }
-    }
-
-    // 3. LOAD GOOGLE MAPS SCRIPT DYNAMICALLY
-    const apiKey = import.meta.env.VITE_GOOGLE_API_KEY || '';
-    const placeId = import.meta.env.VITE_GOOGLE_PLACE_ID || 'ChIJd39999999999999';
-
-    if (!apiKey) {
-      console.info("VITE_GOOGLE_API_KEY not configured. Testimonials running in offline fallback mode.");
-      return;
-    }
-
-    const scriptId = 'google-maps-places-sdk';
-    let script = document.getElementById(scriptId);
-
-    const initializePlacesService = () => {
-      try {
-        const dummyDiv = document.createElement('div');
-        const service = new window.google.maps.places.PlacesService(dummyDiv);
-
-        service.getDetails({
-          placeId: placeId,
-          fields: ['reviews', 'rating', 'user_ratings_total', 'url']
-        }, (place, status) => {
-          if (status === window.google.maps.places.PlacesServiceStatus.OK && place) {
-            // Map Places API review nodes to Testimonial shapes
-            const fetchedReviews = (place.reviews || []).map(r => ({
-              text: r.text,
-              avatar: r.author_name ? r.author_name.substring(0, 2).toUpperCase() : 'G',
-              name: r.author_name,
-              role: 'Verified Google Reviewer',
-              rating: r.rating,
-              profile_photo_url: r.profile_photo_url,
-              time: r.time * 1000, // API returns seconds
-              url: r.author_url || place.url
-            }));
-
-            // Filter out 1-star reviews as requested by user
-            const filteredReviews = fetchedReviews.filter(r => r.rating > 1);
-
-            // Merge with local testimonials (ensures the infinite carousel remains full and rich)
-            const mergedReviews = [...filteredReviews, ...localTestimonials];
-
-            setReviews(mergedReviews);
-            setOverallRating(place.rating || 4.9);
-            setTotalReviews(place.user_ratings_total || 22);
-
-            // Update cache
-            localStorage.setItem(CACHE_KEY, JSON.stringify({
-              timestamp: Date.now(),
-              data: {
-                reviews: mergedReviews,
-                overallRating: place.rating || 4.9,
-                totalReviews: place.user_ratings_total || 22
-              }
-            }));
-          } else {
-            console.warn("Places details call failed. Status:", status);
-          }
-        });
-      } catch (err) {
-        console.error("Google Places integration failed gracefully:", err);
-      }
-    };
-
-    if (!script) {
-      script = document.createElement('script');
-      script.id = scriptId;
-      script.src = `https://maps.googleapis.com/maps/api/js?key=${apiKey}&libraries=places`;
-      script.async = true;
-      script.defer = true;
-      script.onload = initializePlacesService;
-      script.onerror = () => console.warn("Google Maps JS script load failed. Reverting to local testimonials.");
-      document.head.appendChild(script);
-    } else {
-      if (window.google && window.google.maps && window.google.maps.places) {
-        initializePlacesService();
-      } else {
-        script.addEventListener('load', initializePlacesService);
-      }
-    }
-  }, []);
-
-  // 4. ANIMATION & GSAP TRIGGER
+  // 2. ANIMATION & GSAP TRIGGER
   useEffect(() => {
     if (!containerRef.current) return;
 
@@ -282,7 +333,7 @@ export default function Testimonials() {
 
               {/* Review date */}
               <div className="testimonial-card__date">
-                {t.time ? formatDate(t.time) : t.date || 'Recent Review'}
+                {t.date || 'Recent Review'}
               </div>
 
               {/* Review quote text */}
@@ -291,17 +342,7 @@ export default function Testimonials() {
               {/* Author footer and original link */}
               <div className="testimonial-card__author">
                 <div className="testimonial-card__author-info">
-                  {t.profile_photo_url ? (
-                    <img 
-                      src={t.profile_photo_url} 
-                      alt={t.name} 
-                      className="testimonial-card__photo" 
-                      referrerPolicy="no-referrer"
-                      loading="lazy" 
-                    />
-                  ) : (
-                    <div className="testimonial-card__avatar">{t.avatar}</div>
-                  )}
+                  <div className="testimonial-card__avatar">{t.avatar}</div>
                   <div>
                     <div className="testimonial-card__name">{t.name}</div>
                     <div className="testimonial-card__role">{t.role}</div>
