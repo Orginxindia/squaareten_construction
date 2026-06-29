@@ -443,11 +443,11 @@ export default function InvoiceModal({ booking, plots, onClose }) {
                       {pricingRows.map((row, index) => (
                         <tr key={index}>
                           <td className="text-center">{index + 1}</td>
-                          <td>{row.desc}</td>
+                          <td className="text-center">{row.desc}</td>
                           <td className="text-center">{row.unit}</td>
                           <td className="text-center">{row.qty}</td>
-                          <td className="text-right">{row.rate}</td>
-                          <td className="text-right">{row.amount}</td>
+                          <td className="text-center">{row.rate}</td>
+                          <td className="text-center">{row.amount}</td>
                         </tr>
                       ))}
                     </>
@@ -455,7 +455,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
                 })()}
                 <tr className="invoice-pricing-total-row">
                   <td colSpan="5" className="text-center font-bold">T O T A L</td>
-                  <td className="text-right font-bold">Rs.{Number(totalAmount).toLocaleString('en-IN')}/-</td>
+                  <td className="text-center font-bold">Rs.{Number(totalAmount).toLocaleString('en-IN')}/-</td>
                 </tr>
               </tbody>
             </table>
