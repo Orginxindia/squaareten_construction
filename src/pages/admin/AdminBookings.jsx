@@ -4,6 +4,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import AdminLayout from '../../components/admin/AdminLayout';
+import InvoiceModal from '../../components/admin/InvoiceModal';
 
 export default function AdminBookings() {
   const [bookings, setBookings] = useState([]);
@@ -13,12 +14,15 @@ export default function AdminBookings() {
   const [showForm, setShowForm] = useState(false);
   const [editBooking, setEditBooking] = useState(null);
   const [toast, setToast] = useState('');
+  const [selectedInvoiceBooking, setSelectedInvoiceBooking] = useState(null);
+  const [showInvoiceModal, setShowInvoiceModal] = useState(false);
   const [form, setForm] = useState({
     customer_name: '',
     mobile: '',
     plot_number: '',
     phase: 1,
     plot_size: '',
+    advance_amount: '',
     booking_status: 'reserved',
     notes: '',
   });
@@ -46,7 +50,7 @@ export default function AdminBookings() {
 
   const openAdd = () => {
     setEditBooking(null);
-    setForm({ customer_name: '', mobile: '', plot_number: '', phase: 1, plot_size: '', booking_status: 'reserved', notes: '' });
+    setForm({ customer_name: '', mobile: '', plot_number: '', phase: 1, plot_size: '', advance_amount: '', booking_status: 'reserved', notes: '' });
     setShowForm(true);
   };
 
@@ -58,10 +62,16 @@ export default function AdminBookings() {
       plot_number: b.plot_number,
       phase: b.phase,
       plot_size: b.plot_size || '',
+      advance_amount: b.advance_amount !== undefined && b.advance_amount !== null ? String(b.advance_amount) : '',
       booking_status: b.booking_status,
       notes: b.notes || '',
     });
     setShowForm(true);
+  };
+
+  const openInvoice = (b) => {
+    setSelectedInvoiceBooking(b);
+    setShowInvoiceModal(true);
   };
 
   const handleSave = async () => {
@@ -73,6 +83,13 @@ export default function AdminBookings() {
     // Find matching plot to get plot_id
     const matchedPlot = plots.find(p => p.plot_number === form.plot_number && p.phase === Number(form.phase));
 
+    const bookingData = {
+      ...form,
+      phase: Number(form.phase),
+      advance_amount: form.advance_amount ? Number(form.advance_amount) : 0,
+      plot_id: matchedPlot?.id || null,
+    };
+
     if (editBooking) {
       // 1. If previous booking was pointing to a plot, reset it to available first
       if (editBooking.plot_id) {
@@ -80,11 +97,7 @@ export default function AdminBookings() {
       }
 
       // 2. Save the updated booking
-      const { error } = await supabase.from('bookings').update({
-        ...form,
-        phase: Number(form.phase),
-        plot_id: matchedPlot?.id || null,
-      }).eq('id', editBooking.id);
+      const { error } = await supabase.from('bookings').update(bookingData).eq('id', editBooking.id);
       if (error) { showToast('Error: ' + error.message); return; }
 
       // 3. Update the new matched plot status
@@ -96,11 +109,7 @@ export default function AdminBookings() {
       showToast('Booking updated successfully!');
     } else {
       // Insert new booking
-      const { error } = await supabase.from('bookings').insert({
-        ...form,
-        phase: Number(form.phase),
-        plot_id: matchedPlot?.id || null,
-      });
+      const { error } = await supabase.from('bookings').insert(bookingData);
       if (error) { showToast('Error: ' + error.message); return; }
 
       // Auto-update plot status if matched
@@ -186,6 +195,7 @@ export default function AdminBookings() {
                     <th>Plot #</th>
                     <th>Phase</th>
                     <th>Plot Size</th>
+                    <th>Advance</th>
                     <th>Status</th>
                     <th>Date</th>
                     <th>Actions</th>
@@ -202,6 +212,7 @@ export default function AdminBookings() {
                         <td>{b.plot_number}</td>
                         <td>Phase {b.phase}</td>
                         <td>{b.plot_size || '—'}</td>
+                        <td>{b.advance_amount ? `Rs. ${Number(b.advance_amount).toLocaleString('en-IN')}/-` : 'Rs. 0/-'}</td>
                         <td>
                           <span className={`admin-status admin-status--${b.booking_status}`}>
                             {b.booking_status.charAt(0).toUpperCase() + b.booking_status.slice(1)}
@@ -210,6 +221,7 @@ export default function AdminBookings() {
                         <td>{new Date(b.created_at).toLocaleDateString('en-IN')}</td>
                         <td>
                           <div className="admin-actions">
+                            <button className="admin-btn admin-btn--sm admin-btn--outline" onClick={() => openInvoice(b)}>Invoice</button>
                             <button className="admin-btn admin-btn--sm" onClick={() => openEdit(b)}>Edit</button>
                             <button className="admin-btn admin-btn--sm admin-btn--danger" onClick={() => handleDelete(b.id)}>Delete</button>
                           </div>
@@ -243,13 +255,46 @@ export default function AdminBookings() {
                   </div>
                   <div className="admin-form-group">
                     <label>Plot Number *</label>
-                    <input className="admin-input" value={form.plot_number} onChange={e => setForm({ ...form, plot_number: e.target.value })} placeholder="e.g. 17" />
+                    <input
+                      list="plot-numbers"
+                      className="admin-input"
+                      value={form.plot_number}
+                      onChange={e => {
+                        const val = e.target.value;
+                        const matched = plots.find(p => p.plot_number === val && p.phase === Number(form.phase));
+                        setForm({
+                          ...form,
+                          plot_number: val,
+                          plot_size: matched ? `${matched.total_area} sq.ft` : form.plot_size
+                        });
+                      }}
+                      placeholder="e.g. 17"
+                    />
+                    <datalist id="plot-numbers">
+                      {plots.filter(p => p.phase === Number(form.phase)).map(p => (
+                        <option key={p.id} value={p.plot_number}>
+                          Plot {p.plot_number} ({p.total_area} sq.ft)
+                        </option>
+                      ))}
+                    </datalist>
                   </div>
                 </div>
                 <div className="admin-form-row">
                   <div className="admin-form-group">
                     <label>Phase</label>
-                    <select className="admin-input" value={form.phase} onChange={e => setForm({ ...form, phase: e.target.value })}>
+                    <select
+                      className="admin-input"
+                      value={form.phase}
+                      onChange={e => {
+                        const nextPhase = Number(e.target.value);
+                        const matched = plots.find(p => p.plot_number === form.plot_number && p.phase === nextPhase);
+                        setForm({
+                          ...form,
+                          phase: nextPhase,
+                          plot_size: matched ? `${matched.total_area} sq.ft` : ''
+                        });
+                      }}
+                    >
                       <option value={1}>Phase 1</option>
                       <option value={2}>Phase 2</option>
                     </select>
@@ -259,13 +304,25 @@ export default function AdminBookings() {
                     <input className="admin-input" value={form.plot_size} onChange={e => setForm({ ...form, plot_size: e.target.value })} placeholder="e.g. 2359 sq.ft" />
                   </div>
                 </div>
-                <div className="admin-form-group">
-                  <label>Booking Status</label>
-                  <select className="admin-input" value={form.booking_status} onChange={e => setForm({ ...form, booking_status: e.target.value })}>
-                    <option value="reserved">Reserved</option>
-                    <option value="sold">Sold</option>
-                    <option value="cancelled">Cancelled</option>
-                  </select>
+                <div className="admin-form-row">
+                  <div className="admin-form-group">
+                    <label>Advance Amount (Rs.)</label>
+                    <input
+                      type="number"
+                      className="admin-input"
+                      value={form.advance_amount}
+                      onChange={e => setForm({ ...form, advance_amount: e.target.value })}
+                      placeholder="e.g. 100000"
+                    />
+                  </div>
+                  <div className="admin-form-group">
+                    <label>Booking Status</label>
+                    <select className="admin-input" value={form.booking_status} onChange={e => setForm({ ...form, booking_status: e.target.value })}>
+                      <option value="reserved">Reserved</option>
+                      <option value="sold">Sold</option>
+                      <option value="cancelled">Cancelled</option>
+                    </select>
+                  </div>
                 </div>
                 <div className="admin-form-group">
                   <label>Notes</label>
@@ -280,6 +337,18 @@ export default function AdminBookings() {
               </div>
             </div>
           </div>
+        )}
+
+        {/* Invoice Modal */}
+        {showInvoiceModal && (
+          <InvoiceModal
+            booking={selectedInvoiceBooking}
+            plots={plots}
+            onClose={() => {
+              setShowInvoiceModal(false);
+              setSelectedInvoiceBooking(null);
+            }}
+          />
         )}
       </div>
     </AdminLayout>

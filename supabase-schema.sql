@@ -33,6 +33,7 @@ CREATE TABLE IF NOT EXISTS bookings (
   plot_number TEXT NOT NULL,
   phase INTEGER NOT NULL DEFAULT 1,
   plot_size TEXT,
+  advance_amount NUMERIC DEFAULT 0,
   booking_status TEXT NOT NULL DEFAULT 'reserved' CHECK (booking_status IN ('reserved', 'sold', 'cancelled')),
   notes TEXT DEFAULT '',
   created_at TIMESTAMPTZ DEFAULT NOW(),

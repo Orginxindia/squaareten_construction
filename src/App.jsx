@@ -52,8 +52,21 @@ export default function App() {
     lenis.on('scroll', ScrollTrigger.update);
 
     // Sync GSAP ticker to run Lenis raf (requestAnimationFrame) loop
+    let lastIsAdmin = null;
     const tickerCallback = (time) => {
-      lenis.raf(time * 1000);
+      const isAdminRoute = window.location.pathname.startsWith('/admin');
+      if (isAdminRoute !== lastIsAdmin) {
+        lastIsAdmin = isAdminRoute;
+        if (isAdminRoute) {
+          lenis.stop();
+        } else {
+          lenis.start();
+        }
+      }
+
+      if (!isAdminRoute) {
+        lenis.raf(time * 1000);
+      }
     };
     gsap.ticker.add(tickerCallback);
     gsap.ticker.lagSmoothing(50, 16);

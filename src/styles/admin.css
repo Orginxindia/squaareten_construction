@@ -456,6 +456,9 @@
 
 .admin-table-wrapper {
   overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+  display: block;
 }
 
 .admin-table {
@@ -580,6 +583,7 @@
 .admin-actions {
   display: flex;
   gap: 0.5rem;
+  flex-wrap: wrap;
 }
 
 /* ── Phase Toggle ─────────────────────────────────── */
@@ -1129,5 +1133,604 @@
 
   .admin-main {
     margin-left: 0;
+  }
+}
+
+/* ── Quotation / Invoice Modal & Template Styling ── */
+.invoice-overlay {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  z-index: 1100;
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  left: 0 !important;
+  top: 0 !important;
+  margin: 0 !important;
+  box-sizing: border-box !important;
+}
+
+.invoice-modal-container {
+  display: flex;
+  width: 95%;
+  max-width: 1350px;
+  height: 90vh;
+  background: var(--color-surface-black);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s ease;
+}
+
+@media (max-width: 1350px) {
+  .invoice-modal-container {
+    width: 98%;
+    height: 95vh;
+  }
+}
+
+@media (max-width: 1200px) {
+  .invoice-overlay {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .invoice-modal-container {
+    flex-direction: column;
+    height: auto;
+    max-height: none;
+    overflow: visible;
+  }
+
+  .invoice-config-panel {
+    width: 100% !important;
+    min-width: 100% !important;
+    height: auto !important;
+    border-right: none;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .invoice-preview-container {
+    width: 100% !important;
+    padding: 1.5rem !important;
+    overflow: visible !important;
+  }
+
+  .invoice-a4-page {
+    zoom: 0.9;
+    box-shadow: none;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 900px) {
+  .invoice-a4-page {
+    zoom: 0.75;
+    padding: 25px 30px;
+  }
+}
+
+@media (max-width: 650px) {
+  .invoice-a4-page {
+    zoom: 0.55;
+    padding: 15px 20px;
+  }
+  
+  .invoice-logo-wrapper {
+    width: 70px;
+    height: 70px;
+    min-width: 70px;
+  }
+  
+  .invoice-company-brand {
+    font-size: 16px;
+  }
+}
+
+/* Left panel for settings */
+.invoice-config-panel {
+  width: 450px;
+  min-width: 450px;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  background: #121212;
+  border-right: 1px solid var(--color-border);
+}
+
+.invoice-config-header {
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.invoice-config-header h3 {
+  margin: 0;
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  font-size: 1.15rem;
+}
+
+.invoice-config-header p {
+  margin: 4px 0 0;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.invoice-config-body {
+  flex: 1;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Beautiful modern visible scrollbar */
+.invoice-config-body::-webkit-scrollbar {
+  width: 10px;
+}
+
+.invoice-config-body::-webkit-scrollbar-track {
+  background: #121212;
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.invoice-config-body::-webkit-scrollbar-thumb {
+  background: var(--color-accent, #c9a86a);
+  border-radius: 5px;
+  border: 2px solid #121212;
+}
+
+.invoice-config-body::-webkit-scrollbar-thumb:hover {
+  background: var(--color-accent-light, #dfbe7f);
+}
+
+/* Config Section Title styling */
+.invoice-config-section-title {
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent, #c9a86a);
+  margin: 1.25rem 0 0.5rem 0;
+  padding-bottom: 0.35rem;
+  border-bottom: 1px dashed rgba(201, 169, 110, 0.2);
+}
+
+.invoice-config-section-title:first-of-type {
+  margin-top: 0;
+}
+
+.invoice-config-divider {
+  border: 0;
+  height: 1px;
+  background: var(--color-border);
+  margin: 0.5rem 0;
+}
+
+.invoice-config-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.invoice-config-row .admin-form-group {
+  flex: 1;
+  margin-bottom: 0;
+}
+
+.invoice-config-footer {
+  padding: 1.25rem 1.5rem;
+  border-top: 1px solid var(--color-border);
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  background: #161616;
+}
+
+/* Right panel for invoice render */
+.invoice-preview-container {
+  flex: 1;
+  background: #1e1e1e;
+  overflow-y: auto;
+  padding: 2.5rem;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+/* A4 Sheet style on screen */
+.invoice-a4-page {
+  width: 210mm;
+  min-height: 297mm;
+  background: #FFFFFF;
+  color: #0D0D0D;
+  padding: 35px 45px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+  box-sizing: border-box;
+  font-family: 'Outfit', sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Company details header */
+.invoice-header-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.invoice-logo-wrapper {
+  width: 90px;
+  height: 90px;
+  min-width: 90px;
+  border: 1px solid #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  background: #fff;
+  box-sizing: border-box;
+}
+
+.invoice-logo-wrapper img {
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+
+.invoice-title-wrapper {
+  flex: 1;
+}
+
+.invoice-company-brand {
+  font-family: 'Outfit', sans-serif;
+  font-size: 21px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin: 0;
+  color: #1a1a1a;
+  line-height: 1.2;
+}
+
+.invoice-company-services {
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  margin: 2px 0 0;
+  font-weight: 600;
+  color: #444;
+}
+
+.invoice-company-email-id,
+.invoice-company-contact-numbers {
+  font-size: 11px;
+  margin: 1px 0 0;
+  color: #333;
+  font-weight: 500;
+}
+
+.invoice-hairline-separator {
+  border-top: 1px solid #1a1a1a;
+  margin: 0.5rem 0 0.75rem 0;
+}
+
+/* Document title and date */
+.invoice-document-meta {
+  margin-bottom: 1.25rem;
+  display: block;
+}
+
+.invoice-date-row {
+  margin-bottom: 6px;
+  text-align: right;
+}
+
+.invoice-heading-main {
+  font-family: 'Outfit', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+  margin: 0;
+  text-align: center;
+  color: #000;
+}
+
+.invoice-date-stamp {
+  font-size: 13px;
+  font-weight: 600;
+  color: #000;
+}
+
+/* Grid layout for TO and stacked boxes */
+.invoice-grid-box-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.invoice-grid-cell {
+  border: 1px solid #1a1a1a;
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  background: transparent;
+}
+
+.client-area-cell {
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.invoice-grid-cell-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.cell-client-to strong {
+  font-size: 13px;
+  font-weight: 700;
+  color: #000;
+}
+
+.highlight-client-name {
+  font-size: 14px;
+  font-weight: 700;
+  margin: 4px 0 0;
+  color: #000;
+}
+
+.cell-subtitle {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cell-subtitle-underlined {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: #000;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.statement-line {
+  font-size: 12px;
+  margin-top: 2px;
+  color: #000;
+  font-weight: 500;
+}
+
+.highlight-with-road {
+  color: #c53030;
+  font-weight: 700;
+}
+
+.highlight-project-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin: 0;
+  color: #c53030;
+  line-height: 1.4;
+}
+
+.location-line {
+  font-size: 12px;
+  margin: 1px 0 0 0;
+  color: #000;
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+/* Pricing table styling */
+.invoice-pricing-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+}
+
+.invoice-pricing-table th,
+.invoice-pricing-table td {
+  border: 1.5px solid #1a1a1a;
+  padding: 8px 10px;
+  font-size: 12px;
+  color: #000;
+}
+
+.invoice-pricing-table th {
+  background: transparent;
+  font-weight: 700;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.invoice-pricing-table td {
+  font-weight: 500;
+}
+
+.invoice-pricing-table .text-center {
+  text-align: center;
+}
+
+.invoice-pricing-table .text-right {
+  text-align: right;
+}
+
+.invoice-pricing-table .font-bold {
+  font-weight: 700;
+}
+
+.invoice-pricing-total-row td {
+  border-top: 2px solid #1a1a1a;
+  font-size: 13px;
+}
+
+/* Advance banner */
+.invoice-advance-callout {
+  border: 1px solid #1a1a1a;
+  background: #ffec3d; /* exact bright yellow/orange advance banner from template */
+  color: #000;
+  font-size: 14px;
+  font-weight: 800;
+  padding: 8px 16px;
+  text-align: center;
+  letter-spacing: 0.02em;
+  margin: 1.5rem 0;
+  box-sizing: border-box;
+}
+
+/* Closing notes, signatures */
+.invoice-closing-section {
+  display: flex;
+  flex-direction: column;
+}
+
+.invoice-caution-note {
+  font-size: 11px;
+  font-weight: 700;
+  color: #c53030;
+  margin: 0 0 1rem 0;
+  text-align: center;
+  line-height: 1.4;
+}
+
+.invoice-thanks-text {
+  font-size: 12px;
+  font-weight: 700;
+  color: #000;
+  align-self: flex-end;
+  margin: 0 0 2rem 0;
+}
+
+.invoice-signatures-row {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1rem;
+}
+
+.sig-column {
+  width: 45%;
+}
+
+.sig-name {
+  display: inline-block;
+  border-top: 1px dashed #1a1a1a;
+  padding-top: 6px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #000;
+  min-width: 160px;
+}
+
+.invoice-bottom-border-line {
+  margin-top: auto;
+  border-top: 1px solid #1a1a1a;
+  margin-bottom: 6px;
+}
+
+.invoice-bottom-address {
+  font-size: 10px;
+  font-weight: 700;
+  color: #444;
+  text-align: center;
+  letter-spacing: 0.02em;
+}
+
+/* ── Print Media Query Overrides ── */
+@media print {
+  body * {
+    visibility: hidden !important;
+  }
+  
+  #printable-quotation-sheet,
+  #printable-quotation-sheet * {
+    visibility: visible !important;
+  }
+
+  #printable-quotation-sheet {
+    position: absolute !important;
+    left: 0 !important;
+    top: 0 !important;
+    width: 210mm !important;
+    height: 297mm !important;
+    margin: 0 !important;
+    padding: 20mm !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+    box-sizing: border-box !important;
+  }
+
+  /* Make sure background colors render when printing */
+  .invoice-advance-callout {
+    background-color: #ffec3d !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  /* Hide sidebars, headers, and controls that are not ancestors */
+  .no-print,
+  .admin-sidebar,
+  .admin-header,
+  .invoice-config-panel,
+  .invoice-config-footer {
+    display: none !important;
+    width: 0 !important;
+    height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    opacity: 0 !important;
+  }
+  
+  .invoice-overlay {
+    display: block !important;
+    position: relative !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    overflow: visible !important;
+  }
+
+  .invoice-modal-container {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    max-width: none !important;
+    background: none !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: visible !important;
+  }
+
+  .invoice-preview-container {
+    display: block !important;
+    width: auto !important;
+    height: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    background: none !important;
+    overflow: visible !important;
   }
 }
