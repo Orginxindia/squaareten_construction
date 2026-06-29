@@ -34,6 +34,23 @@ export default function App() {
   const [isEstimatorOpen, setIsEstimatorOpen] = useState(false);
 
   useEffect(() => {
+    // Print premium console logo
+    console.log(
+      `%c\n` +
+      `  _____  ____  _    _          _      _____  ______ _______ ______ _   _ \n` +
+      ` / ____|/ __ \\| |  | |   /\\   | |    |  __ \\|  ____|__   __|  ____| \\ | |\n` +
+      `| (___ | |  | | |  | |  /  \\  | |    | |__) | |__     | |  | |__  |  \\| |\n` +
+      ` \\___ \\| |  | | |  | | / /\\ \\ | |    |  _  /|  __|    | |  |  __| | . \` |\n` +
+      ` ____) | |__| | |__| |/ ____ \\| |____| | \\ \\| |____   | |  | |____| |\\  |\n` +
+      `|_____/ \\___\\_\\\\____//_/    \\_\\______|_|  \\_\\______|  |_|  |______|_| \\_|\n\n`,
+      "color: #c9a86a; font-weight: bold;"
+    );
+    console.log(
+      "%c BUILDING EXCELLENCE — SINCE 2014 %c Developed & Managed by orginx.in ",
+      "color: #121212; background: #c9a86a; padding: 4px 8px; font-weight: 700; border-radius: 3px 0 0 3px;",
+      "color: #c9a86a; background: #1a1a1a; padding: 4px 8px; font-weight: 700; border-radius: 0 3px 3px 0;"
+    );
+
     // Register GSAP ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
