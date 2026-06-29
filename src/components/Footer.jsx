@@ -80,7 +80,7 @@ export default function Footer() {
         </div>
         <div className="footer__bottom">
           <p className="footer__copyright">
-            © 2024 Squaareten Construction Pvt Ltd. All rights reserved. | Developed by <a href="https://orginx.in" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>orginx.in</a>
+            © 2024 Squaareten Construction Pvt Ltd. All rights reserved. | Developed and managed by <a href="https://orginx.in" target="_blank" rel="noopener noreferrer" style={{ color: 'var(--color-accent)', textDecoration: 'underline' }}>orginx.in</a>
           </p>
           <div className="footer__bottom-links">
             <a href="#" className="footer__bottom-link">Privacy Policy</a>
