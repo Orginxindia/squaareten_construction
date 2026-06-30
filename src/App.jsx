@@ -54,44 +54,78 @@ export default function App() {
     // Register GSAP ScrollTrigger
     gsap.registerPlugin(ScrollTrigger);
 
-    // Initialize Lenis smooth scroll
-    const lenis = new Lenis({
-      duration: 0.9,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      smoothWheel: true,
-      wheelMultiplier: 1.0,
-      touchMultiplier: 1.2,
-    });
+    // Detect mobile/touch devices — skip Lenis on these for native smooth scrolling
+    const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    const isMobileScreen = window.innerWidth < 1024;
+    const skipLenis = isTouchDevice || isMobileScreen;
 
-    window.lenis = lenis;
+    let lenis = null;
+    let tickerCallback = null;
 
-    // Connect Lenis scroll events to ScrollTrigger updates
-    lenis.on('scroll', ScrollTrigger.update);
+    if (!skipLenis) {
+      // Initialize Lenis smooth scroll (desktop only)
+      lenis = new Lenis({
+        duration: 0.9,
+        easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+        smoothWheel: true,
+        wheelMultiplier: 1.0,
+        touchMultiplier: 1.2,
+      });
 
-    // Sync GSAP ticker to run Lenis raf (requestAnimationFrame) loop
-    let lastIsAdmin = null;
-    const tickerCallback = (time) => {
-      const isAdminRoute = window.location.pathname.startsWith('/admin');
-      if (isAdminRoute !== lastIsAdmin) {
-        lastIsAdmin = isAdminRoute;
-        if (isAdminRoute) {
-          lenis.stop();
-        } else {
-          lenis.start();
+      window.lenis = lenis;
+
+      // Connect Lenis scroll events to ScrollTrigger updates
+      lenis.on('scroll', ScrollTrigger.update);
+
+      // Sync GSAP ticker to run Lenis raf (requestAnimationFrame) loop
+      let lastIsAdmin = null;
+      tickerCallback = (time) => {
+        const isAdminRoute = window.location.pathname.startsWith('/admin');
+        if (isAdminRoute !== lastIsAdmin) {
+          lastIsAdmin = isAdminRoute;
+          if (isAdminRoute) {
+            lenis.stop();
+            document.documentElement.classList.add('is-admin');
+            document.documentElement.classList.remove('is-loading');
+          } else {
+            document.documentElement.classList.remove('is-admin');
+            lenis.start();
+          }
         }
-      }
 
-      if (!isAdminRoute) {
-        lenis.raf(time * 1000);
-      }
-    };
-    gsap.ticker.add(tickerCallback);
-    gsap.ticker.lagSmoothing(50, 16);
+        if (!isAdminRoute) {
+          lenis.raf(time * 1000);
+        }
+      };
+      gsap.ticker.add(tickerCallback);
+      gsap.ticker.lagSmoothing(50, 16);
+    } else {
+      // On mobile/touch: just handle admin class toggling for scroll fixes
+      let lastIsAdmin = null;
+      tickerCallback = (time) => {
+        const isAdminRoute = window.location.pathname.startsWith('/admin');
+        if (isAdminRoute !== lastIsAdmin) {
+          lastIsAdmin = isAdminRoute;
+          if (isAdminRoute) {
+            document.documentElement.classList.add('is-admin');
+            document.documentElement.classList.remove('is-loading');
+          } else {
+            document.documentElement.classList.remove('is-admin');
+          }
+        }
+      };
+      gsap.ticker.add(tickerCallback);
+    }
 
     return () => {
-      lenis.destroy();
-      window.lenis = null;
-      gsap.ticker.remove(tickerCallback);
+      if (lenis) {
+        lenis.destroy();
+        window.lenis = null;
+      }
+      if (tickerCallback) {
+        gsap.ticker.remove(tickerCallback);
+      }
+      document.documentElement.classList.remove('is-admin');
     };
   }, []);
 

@@ -288,6 +288,8 @@
   margin-left: 260px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .admin-header {
@@ -1074,6 +1076,7 @@
 
   .admin-main {
     margin-left: 0;
+    overflow: visible !important;
   }
 
   .admin-header__menu-btn {

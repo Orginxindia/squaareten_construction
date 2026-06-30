@@ -285,26 +285,6 @@
   transform: scale(1.08);
 }
 
-/* ── Responsive ───────────────────────────────────── */
-@media (max-width: 480px) {
-  .ai-panel {
-    right: 12px;
-    left: 12px;
-    width: auto;
-    bottom: 90px;
-  }
-
-  .ai-fab {
-    bottom: 20px;
-    right: 20px;
-  }
-
-  .whatsapp-fab {
-    bottom: 20px;
-    right: 88px !important;
-  }
-}
-
 /* ── WhatsApp FAB ─────────────────────────────────── */
 .whatsapp-fab {
   position: fixed;
@@ -335,4 +315,24 @@
 .whatsapp-fab svg {
   width: 26px;
   height: 26px;
+}
+
+/* ── Responsive ───────────────────────────────────── */
+@media (max-width: 768px) {
+  .ai-panel {
+    right: 12px;
+    left: 12px;
+    width: auto;
+    bottom: 90px;
+  }
+
+  .ai-fab {
+    bottom: 20px;
+    right: 20px;
+  }
+
+  .whatsapp-fab {
+    bottom: 90px;
+    right: 20px;
+  }
 }

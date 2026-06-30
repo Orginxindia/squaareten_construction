@@ -33,6 +33,14 @@ body {
   color: var(--color-text);
   background-color: var(--color-bg);
   overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Force native scrolling on admin routes (overrides Lenis styles) */
+html.is-admin,
+html.is-admin body {
+  overflow-y: auto !important;
+  scroll-behavior: auto;
 }
 
 /* ── Typography ─────────────────────────────────────── */
