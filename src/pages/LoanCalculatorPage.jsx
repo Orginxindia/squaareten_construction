@@ -226,6 +226,17 @@ export default function LoanCalculatorPage() {
     };
   }, [loanAmount, interestRate, totalMonths, prepaymentMonthly, prepaymentLumpSum, prepaymentLumpSumMonth]);
 
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    document.documentElement.classList.remove('is-loading');
+    
+    document.title = "Financial Advisory & Loan EMI Calculator — Squaareten";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Simulate your home or commercial construction loan repayments. Optimize your tenure, interest savings, and prepayment strategy with Squaareten Constructions.');
+    }
+  }, []);
+
   // Animate monthly EMI numbers on update
   useEffect(() => {
     if (emiValRef.current) {

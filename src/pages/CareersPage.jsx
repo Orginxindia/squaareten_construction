@@ -10,6 +10,8 @@ import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { emailConfig } from '../config/emailConfig';
+import { getCareers } from '../lib/careerStore';
+import { addEnquiry } from '../lib/enquiryStore';
 
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
@@ -96,6 +98,7 @@ export default function CareersPage() {
 
   // Accordion active state
   const [activeRoleIndex, setActiveRoleIndex] = useState(0);
+  const [positionsList, setPositionsList] = useState([]);
 
   // Form states
   const [formData, setFormData] = useState({
@@ -109,6 +112,16 @@ export default function CareersPage() {
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+
+  // Load careers and set SEO titles on mount
+  useEffect(() => {
+    setPositionsList(getCareers());
+    document.title = "Join Squaareten — Careers & Opportunities";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Explore open careers and structural engineering opportunities at Squaareten Construction Pvt Ltd. Build your career with our landmark projects.');
+    }
+  }, []);
 
   // Cursor gold light movement tracker inside Hero
   useEffect(() => {
@@ -314,6 +327,16 @@ export default function CareersPage() {
     formDataPayload.append("from_name", "Squaare Ten Constructions website");
 
     try {
+      // Record submission locally in enquiries database
+      addEnquiry({
+        type: 'career',
+        name: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        position: positionsList.find(p => p.id === formData.position)?.title || formData.position,
+        message: formData.message || `Credentials Uploaded: ${fileName || 'Resume'}`
+      });
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formDataPayload
@@ -459,7 +482,7 @@ export default function CareersPage() {
           </div>
 
           <div className="positions-accordion">
-            {positionsData.map((role, index) => {
+            {positionsList.map((role, index) => {
               const isOpen = activeRoleIndex === index;
               return (
                 <div 
@@ -574,7 +597,7 @@ export default function CareersPage() {
                       className="form-select"
                     >
                       <option value="">Select Opportunity</option>
-                      {positionsData.map(pos => (
+                      {positionsList.map(pos => (
                         <option key={pos.id} value={pos.id}>{pos.title}</option>
                       ))}
                     </select>

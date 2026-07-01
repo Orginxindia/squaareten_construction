@@ -140,12 +140,7 @@ export default function TamilNaduMap({ districts, activeDistrict, onSelectDistri
         .addTo(map)
         .on('click', () => {
           onSelectDistrict(d.id);
-          // Navigate to projects detail or contact page
-          if (d.status === 'hq') {
-            navigate('/contact');
-          } else {
-            navigate(`/projects/${d.id}`);
-          }
+          navigate('/projects');
         })
         .on('mouseover', () => {
           L.popup({

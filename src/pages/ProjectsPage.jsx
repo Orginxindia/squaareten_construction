@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { getProjects } from '../lib/projectStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -373,6 +374,8 @@ export default function ProjectsPage({ category }) {
   const resolvedCategory = category || 'residential';
   const [activeCategory, setActiveCategory] = useState(resolvedCategory);
   const [activeStatus, setActiveStatus] = useState('all');
+  const [projectsList, setProjectsList] = useState([]);
+  
   const heroRef = useRef(null);
   const categoriesRef = useRef(null);
   const explorerRef = useRef(null);
@@ -392,14 +395,26 @@ export default function ProjectsPage({ category }) {
     }
   }, [category]);
 
+  // Load projects list on mount and set SEO tags
+  useEffect(() => {
+    setProjectsList(getProjects());
+    
+    // Set dynamic SEO document title and description
+    document.title = "Elite Projects Portfolio — Squaareten Construction";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Explore Squaareten Construction projects portfolio. Award-winning residential constructions, commercial buildings, luxury interiors, and plots in Kovilpapakudi, Madurai.');
+    }
+  }, []);
+
   // Filter projects by active category + status
   const filteredProjects = useMemo(
-    () => projectsData.filter(p => {
+    () => projectsList.filter(p => {
       const matchCategory = p.category === activeCategory || (p.categories && p.categories.includes(activeCategory));
       const matchStatus = activeStatus === 'all' || p.status === activeStatus;
       return matchCategory && matchStatus;
     }),
-    [activeCategory, activeStatus]
+    [projectsList, activeCategory, activeStatus]
   );
 
   // Scroll to top on mount

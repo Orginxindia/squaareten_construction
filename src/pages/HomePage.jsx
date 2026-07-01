@@ -2,7 +2,7 @@
    HOMEPAGE
    Composes the core sections and manages the onboarding/boot cycle
    ============================================================ */
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Onboarding from '../components/Onboarding';
 import Navbar from '../components/Navbar';
 import Hero from '../components/Hero';
@@ -18,6 +18,14 @@ import AIEstimator from '../components/AIEstimator';
 
 export default function HomePage({ isEstimatorOpen, setIsEstimatorOpen }) {
   const [onboardingComplete, setOnboardingComplete] = useState(false);
+
+  useEffect(() => {
+    document.title = "Squaareten Construction Pvt Ltd — Building Excellence, Shaping Futures";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Squaareten Construction Pvt Ltd delivers premium residential, commercial, and turnkey construction solutions. Award-winning craftsmanship with modern design excellence in Madurai.');
+    }
+  }, []);
 
   return (
     <>

@@ -10,6 +10,11 @@ const NAV_ITEMS = [
   { path: '/admin/plots', label: 'Plot Management', icon: '🗺️' },
   { path: '/admin/bookings', label: 'Bookings', icon: '📋' },
   { path: '/admin/reports', label: 'Reports', icon: '📈' },
+  { path: '/admin/projects', label: 'Project Management', icon: '🏗️' },
+  { path: '/admin/careers', label: 'Career Management', icon: '💼' },
+  { path: '/admin/consultancy', label: 'Consultancy Mgmt', icon: '💡' },
+  { path: '/admin/enquiries', label: 'Enquiries', icon: '📩' },
+  { path: '/admin/media', label: 'Media Library', icon: '🖼️' },
 ];
 
 export default function AdminLayout({ children }) {

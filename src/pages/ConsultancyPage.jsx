@@ -7,6 +7,8 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
 import { emailConfig } from '../config/emailConfig';
+import { getConsultancyData } from '../lib/consultancyStore';
+import { addEnquiry } from '../lib/enquiryStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -29,8 +31,17 @@ export default function ConsultancyPage() {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitError, setSubmitError] = useState(null);
+  const [consultancyData, setConsultancyData] = useState({ heroTitle: '', heroSubtitle: '', feeStructure: [] });
 
   useEffect(() => {
+    // Load consultancy config and update page SEO metadata
+    setConsultancyData(getConsultancyData());
+    document.title = "Premium Advisory & Strategic Construction Consulting — Squaareten";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Advising clients with land development, commercial planning, cost estimation engineering, approvals auditing, and interior design consultancy across Madurai.');
+    }
+
     // Scroll to top on mount
     window.scrollTo(0, 0);
     document.documentElement.classList.remove('is-loading');
@@ -201,6 +212,18 @@ export default function ConsultancyPage() {
     formDataPayload.append("Message", formData.message);
 
     try {
+      // Record submission locally in enquiries database
+      addEnquiry({
+        type: 'consultancy',
+        name: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        projectType: formData.projectType,
+        location: formData.location,
+        budget: formData.budget,
+        message: formData.message
+      });
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formDataPayload
@@ -263,11 +286,11 @@ export default function ConsultancyPage() {
             <div className="consulting-hero__gold-line"></div>
             
             <h1 className="consulting-hero__title">
-              Build With Confidence.<br />Plan With Clarity.
+              {consultancyData.heroTitle || <>Build With Confidence.<br />Plan With Clarity.</>}
             </h1>
             
             <p className="consulting-hero__desc">
-              From land development and commercial planning to construction strategy and interior design consulting, we help clients make informed decisions before execution begins.
+              {consultancyData.heroSubtitle || "From land development and commercial planning to construction strategy and interior design consulting, we help clients make informed decisions before execution begins."}
             </p>
             
             <div className="consulting-hero__actions">
@@ -311,6 +334,42 @@ export default function ConsultancyPage() {
                   </div>
                 </div>
               ))}
+            </div>
+          </div>
+        </section>
+
+        {/* SECTION 02.5: STANDARD ADVISORY FEES MATRIX */}
+        <section className="consulting-fees-section" style={{ padding: '5rem 0', background: 'rgba(201,169,110,0.02)', borderTop: '1px solid rgba(255,255,255,0.03)', borderBottom: '1px solid rgba(255,255,255,0.03)' }}>
+          <div className="container">
+            <div className="section-header" style={{ marginBottom: '3rem', textAlign: 'center' }}>
+              <span className="section-caption" style={{ color: '#c9a86a', fontSize: '0.8rem', letterSpacing: '0.15em', textTransform: 'uppercase', fontWeight: '600', display: 'block', marginBottom: '0.5rem' }}>Pricing Matrix</span>
+              <h2 className="section-title" style={{ fontFamily: 'var(--font-heading)', color: '#fff', fontSize: '2.25rem', marginTop: '0.5rem' }}>Advisory Fee Structure</h2>
+              <div style={{ width: '60px', height: '2px', background: '#c9a86a', margin: '1rem auto' }}></div>
+            </div>
+            
+            <div style={{ maxWidth: '800px', margin: '0 auto', background: '#111', border: '1px solid rgba(255,255,255,0.05)', borderRadius: '8px', overflow: 'hidden', boxShadow: '0 10px 30px rgba(0,0,0,0.3)' }}>
+              <table style={{ width: '100%', borderCollapse: 'collapse', textAlign: 'left', fontSize: '0.95rem' }}>
+                <thead>
+                  <tr style={{ borderBottom: '1px solid rgba(255,255,255,0.1)', background: 'rgba(201,168,106,0.03)' }}>
+                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '600', color: '#c9a86a' }}>Service / Consultancy Type</th>
+                    <th style={{ padding: '1.25rem 1.5rem', fontWeight: '600', color: '#c9a86a', textAlign: 'right' }}>Standard Charges</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {!consultancyData.feeStructure || consultancyData.feeStructure.length === 0 ? (
+                    <tr>
+                      <td colSpan="2" style={{ padding: '2rem', textAlign: 'center', color: '#888' }}>No standard fee structures defined. Contact us for custom rates.</td>
+                    </tr>
+                  ) : (
+                    consultancyData.feeStructure.map((fee, idx) => (
+                      <tr key={idx} style={{ borderBottom: idx < consultancyData.feeStructure.length - 1 ? '1px solid rgba(255,255,255,0.05)' : '' }}>
+                        <td style={{ padding: '1.25rem 1.5rem', color: '#fff', fontWeight: '500' }}>{fee.type}</td>
+                        <td style={{ padding: '1.25rem 1.5rem', color: '#c9a86a', fontWeight: '600', textAlign: 'right' }}>{fee.fee}</td>
+                      </tr>
+                    ))
+                  )}
+                </tbody>
+              </table>
             </div>
           </div>
         </section>

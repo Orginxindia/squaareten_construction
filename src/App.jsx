@@ -30,6 +30,13 @@ import AdminBookings from './pages/admin/AdminBookings';
 import AdminReports from './pages/admin/AdminReports';
 import PrintLayout from './pages/admin/PrintLayout';
 
+// New Admin Management views
+import AdminProjects from './pages/admin/AdminProjects';
+import AdminCareers from './pages/admin/AdminCareers';
+import AdminConsultancy from './pages/admin/AdminConsultancy';
+import AdminEnquiries from './pages/admin/AdminEnquiries';
+import AdminMedia from './pages/admin/AdminMedia';
+
 export default function App() {
   const [isEstimatorOpen, setIsEstimatorOpen] = useState(false);
 
@@ -173,6 +180,14 @@ export default function App() {
           <Route path="/admin/bookings" element={<ProtectedRoute><AdminBookings /></ProtectedRoute>} />
           <Route path="/admin/reports" element={<ProtectedRoute><AdminReports /></ProtectedRoute>} />
           <Route path="/admin/print" element={<ProtectedRoute><PrintLayout /></ProtectedRoute>} />
+          
+          {/* New Admin Management Routes */}
+          <Route path="/admin/projects" element={<ProtectedRoute><AdminProjects /></ProtectedRoute>} />
+          <Route path="/admin/careers" element={<ProtectedRoute><AdminCareers /></ProtectedRoute>} />
+          <Route path="/admin/consultancy" element={<ProtectedRoute><AdminConsultancy /></ProtectedRoute>} />
+          <Route path="/admin/enquiries" element={<ProtectedRoute><AdminEnquiries /></ProtectedRoute>} />
+          <Route path="/admin/media" element={<ProtectedRoute><AdminMedia /></ProtectedRoute>} />
+
 
           <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>

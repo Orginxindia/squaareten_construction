@@ -8,6 +8,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
+import { getProjects } from '../lib/projectStore';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -566,8 +567,13 @@ export default function ProjectDetailPage() {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [projectsList, setProjectsList] = useState([]);
 
-  const project = allProjects.find(p => p.id === slug);
+  useEffect(() => {
+    setProjectsList(getProjects());
+  }, []);
+
+  const project = projectsList.find(p => p.id === slug);
 
   // Redirect to custom page if project has its own dedicated page
   useEffect(() => {
@@ -575,6 +581,17 @@ export default function ProjectDetailPage() {
       navigate(`/projects/${project.id}`, { replace: true });
     }
   }, [project, navigate]);
+
+  // Set dynamic SEO document title and meta description
+  useEffect(() => {
+    if (project) {
+      document.title = `${project.name} — Squaareten Construction`;
+      const metaDescription = document.querySelector('meta[name="description"]');
+      if (metaDescription) {
+        metaDescription.setAttribute('content', project.description || `Read details of ${project.name} project designed and constructed by Squaareten Construction Pvt Ltd.`);
+      }
+    }
+  }, [project]);
 
   // Scroll to top on mount
   useEffect(() => {

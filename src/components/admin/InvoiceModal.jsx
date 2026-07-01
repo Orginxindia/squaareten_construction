@@ -5,15 +5,13 @@ import React, { useState, useEffect } from 'react';
 import html2pdf from 'html2pdf.js';
 
 export default function InvoiceModal({ booking, plots, onClose }) {
-  if (!booking) return null;
-
   // Find corresponding plot in layout database
   const matchedPlot = plots.find(
-    (p) => p.plot_number === booking.plot_number && p.phase === Number(booking.phase)
+    (p) => booking && p.plot_number === booking.plot_number && p.phase === Number(booking.phase)
   );
 
   // Initial State Setup
-  const [clientName, setClientName] = useState(booking.customer_name || '');
+  const [clientName, setClientName] = useState(booking?.customer_name || '');
   const [date, setDate] = useState(() => {
     const today = new Date();
     const dd = String(today.getDate()).padStart(2, '0');
@@ -41,6 +39,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
   const [includeBorewell, setIncludeBorewell] = useState(true);
 
   const [siteLocation, setSiteLocation] = useState(() => {
+    if (!booking) return '';
     const facingStr = matchedPlot?.facing ? `${matchedPlot.facing.toUpperCase()} FACING` : 'EAST FACING';
     const phaseStr = `KARUPPIAH NAGAR PHASE ${String(booking.phase).padStart(2, '0')}`;
     return `PLOT NO ${booking.plot_number}– ${facingStr},\n${phaseStr}\nPOTHUMBU, MADURAI`;
@@ -50,7 +49,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
   const [plotRate, setPlotRate] = useState(725000); // per cent
   const [buildingRate, setBuildingRate] = useState(2650); // per sft
   const [borewellCost, setBorewellCost] = useState(200000); // lump sum
-  const [advanceAmount, setAdvanceAmount] = useState(booking.advance_amount || 0);
+  const [advanceAmount, setAdvanceAmount] = useState(booking?.advance_amount || 0);
   const [noteText, setNoteText] = useState(
     'THIS QUOTE IS TENTATIVE NOT THE FINAL ONE! AND WILL BE FINALIZE ACCORDING TO CLIENT REQUIREMENT.'
   );
@@ -74,6 +73,8 @@ export default function InvoiceModal({ booking, plots, onClose }) {
       }
     }
   }, [booking, plots]);
+
+  if (!booking) return null;
 
   // Recalculate cents if totalArea is edited manually
   const handleTotalAreaChange = (val) => {

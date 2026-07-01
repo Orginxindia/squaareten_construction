@@ -4,6 +4,7 @@
 import { useState } from 'react';
 import { useScrollReveal } from '../hooks/useScrollReveal';
 import { emailConfig } from '../config/emailConfig';
+import { addEnquiry } from '../lib/enquiryStore';
 
 export default function Contact() {
   const infoRef = useScrollReveal('fade-left');
@@ -23,6 +24,15 @@ export default function Contact() {
     formDataPayload.append("from_name", "Squaare Ten Constructions website");
 
     try {
+      // Record submission locally in enquiries database
+      addEnquiry({
+        type: 'contact',
+        name: formDataPayload.get("name"),
+        email: formDataPayload.get("email"),
+        phone: formDataPayload.get("phone") || '',
+        message: formDataPayload.get("message")
+      });
+
       const response = await fetch("https://api.web3forms.com/submit", {
         method: "POST",
         body: formDataPayload

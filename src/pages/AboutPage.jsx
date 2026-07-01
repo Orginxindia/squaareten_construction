@@ -26,6 +26,13 @@ export default function AboutPage() {
     window.scrollTo(0, 0);
     document.documentElement.classList.remove('is-loading');
 
+    // Set page SEO title and description
+    document.title = "About Squaareten Construction — Our Legacy & Vision";
+    const metaDescription = document.querySelector('meta[name="description"]');
+    if (metaDescription) {
+      metaDescription.setAttribute('content', 'Learn about Squaareten Construction Pvt Ltd, founded in 2014 by Er. S. P. Karuppiah. Leading premium civil construction, structural engineering, and luxury villa developers in Madurai.');
+    }
+
     // Refresh ScrollTrigger after DOM has settled to ensure correct trigger positions
     const timer = setTimeout(() => {
       ScrollTrigger.refresh();
