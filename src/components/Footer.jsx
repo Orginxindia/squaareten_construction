@@ -39,7 +39,7 @@ export default function Footer() {
               <Link to="/projects/residential" className="footer__link">Residential</Link>
               <Link to="/projects/commercial" className="footer__link">Commercial</Link>
               <Link to="/projects/residential" className="footer__link">Villa Construction</Link>
-              <Link to="/projects/interiors" className="footer__link">Renovation</Link>
+              <Link to="/projects/renovation" className="footer__link">Renovation</Link>
               <Link to="/projects/interiors" className="footer__link">Interior Design</Link>
               <Link to="/projects/consulting" className="footer__link">Turnkey Solutions</Link>
             </div>

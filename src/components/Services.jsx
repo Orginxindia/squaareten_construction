@@ -27,7 +27,7 @@ const FUTURE_PROJECTS_DATA = [
     num: '02',
     title: 'Renovation',
     desc: 'Breathe new life into existing spaces with our expert restoration, expansion, and structural upgrade services.',
-    path: '/consultancy',
+    path: '/projects/renovation',
     image: '/assets/images/project-renovation.png',
     icon: (
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ width: '22px', height: '22px', color: '#8E7544' }}>

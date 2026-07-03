@@ -196,6 +196,29 @@ const INITIAL_PROJECTS = [
     mapUrl: 'https://www.google.com/maps/place/Thiruppalai,+Madurai,+Tamil+Nadu/data=!4m2!3m1!1s0x3b00c5ee91807d9f:0xc6822262d1838cf1?entry=tts',
   },
   {
+    id: 'sedapaaty-residence',
+    name: 'Sedapaaty Residence',
+    location: 'Sedapatti, Madurai',
+    category: 'residential',
+    status: 'Ongoing',
+    img: '/assets/images/sedapaaty-residence.png',
+    description: 'A premium contemporary double-story residential villa combining modern architectural aesthetics, warm exterior cove lighting, a private garage, and landscaped details.',
+    area: '3,500 sq.ft',
+    progress: 30,
+    phase: 'Foundation & Ground Work',
+    expectedCompletion: 'August 2027',
+    story: 'Sedapaaty Residence stands as an upcoming masterpiece of modern residential architecture by Squaareten Construction in Sedapatti, Madurai. The design features a striking double-story structure with a private garage, bespoke wooden cladding highlights, glass balconies, and elegant perimeter boundary lighting. Emphasizing premium construction standards, this villa is designed to merge visual luxury with modern structural durability. The project is currently in the initial construction phase, making steady progress towards completion.',
+    gallery: ['/assets/images/sedapaaty-residence.png'],
+    features: [
+      'Premium Double-Story Design',
+      'Private Garage Space',
+      'Modern Wooden Cladding Facade',
+      'Glass Balcony Railings',
+      'Bespoke Exterior Cove Lighting',
+      'Landscaped Planters & Boundaries'
+    ]
+  },
+  {
     id: 'sandhaipettai-residence',
     name: 'Sandhaipettai Residence',
     location: 'Sandhaipettai, Madurai',
@@ -243,7 +266,7 @@ const INITIAL_PROJECTS = [
     id: 'mahatma-global-gateway',
     name: 'Mahatma Global Gateway',
     location: 'Madurai, Tamil Nadu',
-    category: 'commercial',
+    category: 'renovation',
     status: 'Completed',
     img: '/assets/images/school-image-1.jpeg',
     description: 'Engineering consultancy and comprehensive interior work execution for Mahatma Global Gateway in Madurai.',
@@ -409,7 +432,44 @@ export const getProjects = () => {
     localStorage.setItem('admin_projects', JSON.stringify(INITIAL_PROJECTS));
     return INITIAL_PROJECTS;
   }
-  return JSON.parse(saved);
+  let parsed = JSON.parse(saved);
+  let modified = false;
+
+  // 1. Remove initial projects that are no longer in INITIAL_PROJECTS
+  const initialIds = INITIAL_PROJECTS.map(p => p.id);
+  const nextParsed = parsed.filter(p => {
+    if (!p.id.startsWith('proj-') && !initialIds.includes(p.id)) {
+      modified = true;
+      return false;
+    }
+    return true;
+  });
+  parsed = nextParsed;
+
+  // 2. Sync changes from INITIAL_PROJECTS
+  parsed = parsed.map(p => {
+    const initial = INITIAL_PROJECTS.find(ip => ip.id === p.id);
+    if (initial) {
+      if (p.category !== initial.category || p.img !== initial.img || p.name !== initial.name) {
+        modified = true;
+        return { ...p, ...initial };
+      }
+    }
+    return p;
+  });
+
+  // 3. Add any new initial projects
+  INITIAL_PROJECTS.forEach(ip => {
+    if (!parsed.some(p => p.id === ip.id)) {
+      parsed.push(ip);
+      modified = true;
+    }
+  });
+
+  if (modified) {
+    localStorage.setItem('admin_projects', JSON.stringify(parsed));
+  }
+  return parsed;
 };
 
 export const saveProjects = (projects) => {
