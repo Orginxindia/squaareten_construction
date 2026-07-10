@@ -19,6 +19,7 @@ const categories = [
   { id: 'commercial', label: 'Commercial', path: '/projects/commercial' },
   { id: 'renovation', label: 'Renovation', path: '/projects/renovation' },
   { id: 'plots', label: 'Plots', path: '/projects/plots' },
+  { id: 'videos', label: 'Videos', path: '/projects/videos' },
 ];
 
 const statusFilters = [
@@ -273,6 +274,11 @@ export default function ProjectsPage({ category }) {
   // Filter projects by active category + status
   const filteredProjects = useMemo(
     () => projectsList.filter(p => {
+      if (activeCategory === 'videos') {
+        const hasVideos = p.videos && p.videos.length > 0;
+        const matchStatus = activeStatus === 'all' || p.status === activeStatus;
+        return hasVideos && matchStatus;
+      }
       const matchCategory = p.category === activeCategory || (p.categories && p.categories.includes(activeCategory));
       const matchStatus = activeStatus === 'all' || p.status === activeStatus;
       return matchCategory && matchStatus;
@@ -285,6 +291,14 @@ export default function ProjectsPage({ category }) {
     window.scrollTo(0, 0);
     document.documentElement.classList.remove('is-loading');
   }, []);
+
+  // Refresh ScrollTrigger when category, status, or filtered projects change to recalculate pinning offsets
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 150);
+    return () => clearTimeout(timer);
+  }, [activeCategory, activeStatus, filteredProjects]);
 
   // ── Hero animations (on mount) ───────────────────────
   useEffect(() => {
@@ -647,7 +661,60 @@ export default function ProjectsPage({ category }) {
             </div>
 
             <div className="projects-grid" key={activeCategory}>
-              {filteredProjects.length > 0 ? (
+              {activeCategory === 'videos' ? (
+                (() => {
+                  const allVideos = [];
+                  filteredProjects.forEach(p => {
+                    if (p.videos) {
+                      p.videos.forEach((vid, idx) => {
+                        allVideos.push({
+                          videoUrl: vid,
+                          project: p,
+                          title: `${p.name} - Walkthrough ${idx + 1}`
+                        });
+                      });
+                    }
+                  });
+                  if (allVideos.length === 0) {
+                    return (
+                      <div className="projects-empty">
+                        <div className="projects-empty__icon">🎥</div>
+                        <h3 className="projects-empty__heading">Coming Soon</h3>
+                        <p className="projects-empty__text">
+                          Project walkthrough videos will be available shortly.
+                        </p>
+                      </div>
+                    );
+                  }
+                  return allVideos.map((item, idx) => (
+                    <article key={idx} className="project-card project-card--video" style={{ overflow: 'hidden', cursor: 'default' }} onClick={(e) => e.stopPropagation()}>
+                      <div className="project-card__image-wrap" style={{ position: 'relative', aspectRatio: '16/9', overflow: 'hidden', borderRadius: '4px' }}>
+                        <video 
+                          src={item.videoUrl} 
+                          controls 
+                          preload="metadata" 
+                          playsInline 
+                          style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                        />
+                      </div>
+                      <div className="project-card__body" style={{ paddingTop: '1.25rem' }}>
+                        <h3 className="project-card__name" style={{ fontSize: '1.1rem', marginBottom: '0.4rem', color: '#FFFFFF' }}>
+                          {item.project.name}
+                        </h3>
+                        <div className="project-card__location" style={{ fontSize: '0.85rem', color: 'rgba(255,255,255,0.5)', display: 'flex', alignItems: 'center', gap: '6px' }}>
+                          <LocationPin />
+                          {item.project.location}
+                        </div>
+                      </div>
+                      <div className="project-card__action" style={{ marginTop: '1rem', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+                        <Link to={`/projects/${item.project.id}`} className="project-card__link" style={{ color: '#C9A96E', textDecoration: 'none', display: 'inline-flex', alignItems: 'center', gap: '6px' }}>
+                          View Project Details <ArrowRight />
+                        </Link>
+                      </div>
+                    </article>
+                  ));
+                })()
+              ) : filteredProjects.length > 0 ? (
                 filteredProjects.map((project, index) => (
                   <ProjectCard
                     key={project.id}

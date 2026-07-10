@@ -161,6 +161,8 @@ export default function App() {
           <Route path="/projects/commercial/:status" element={<ProjectsPage category="commercial" />} />
           <Route path="/projects/interiors" element={<ProjectsPage category="interiors" />} />
           <Route path="/projects/interiors/:status" element={<ProjectsPage category="interiors" />} />
+          <Route path="/projects/videos" element={<ProjectsPage category="videos" />} />
+          <Route path="/projects/videos/:status" element={<ProjectsPage category="videos" />} />
           <Route path="/projects/renovation" element={<ProjectsPage category="renovation" />} />
           <Route path="/projects/renovation/:status" element={<ProjectsPage category="renovation" />} />
           <Route path="/projects/consulting" element={<ProjectsPage category="consulting" />} />

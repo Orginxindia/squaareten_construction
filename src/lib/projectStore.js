@@ -318,27 +318,55 @@ const INITIAL_PROJECTS = [
   },
   {
     id: 'bonitaa-hair-skin-care',
-    name: 'Bonitaa Hair & Skin Care - Madurai',
-    location: 'interiors',
+    name: 'Bonitaa Hair & Skin Care - Maudrai',
+    location: 'Madurai, Tamil Nadu',
+    category: 'interiors',
     status: 'Completed',
-    img: '/assets/images/bonita-image-1.jpeg',
+    img: '/assets/images/bonita-after-5.jpg',
     description: 'A premium salon and wellness space designed and executed with modern interiors, elegant finishes, and a customer-focused experience.',
-    area: 'Multiple Outlets',
+    area: '1,500 sq.ft',
     year: '2026',
-    story: 'Bonitaa Hair & Skin Care is one of our valued commercial clients in the beauty and wellness sector. We have successfully completed construction and interior works for several of their franchise locations, delivering premium-quality spaces that align with the brand\'s modern identity and customer experience standards.',
+    story: 'Bonitaa Hair & Skin Care in Madurai is a premium salon and wellness space designed and executed with modern interiors, elegant finishes, and a customer-focused experience. The project showcases customized interior partitions, premium brand-focused color palettes, styling and grooming lounges, and advanced hair & skin care service zones.',
     gallery: [
+      '/assets/images/bonita-after-5.jpg',
       '/assets/images/bonita-image-1.jpeg',
-      '/assets/images/bonita-image-2.jpeg',
-      '/assets/images/bonita-image-3.jpeg',
-      '/assets/images/bonita-image-4.jpeg'
+      '/assets/images/bonita-image-4.jpeg',
+      '/assets/images/bonita-image-6.jpeg',
+      '/assets/images/bonita-image-9.jpeg',
+      '/assets/images/bonita-after-6.jpg',
+      '/assets/images/bonita-after-7.jpeg',
+      '/assets/images/bonita-after-8.jpg',
+      '/assets/images/bonita-before-1.jpeg',
+      '/assets/images/bonita-before-3.jpeg',
+      '/assets/images/bonita-before-4.jpeg',
+      '/assets/images/bonita-before-5.jpeg',
+      '/assets/images/bonita-before-6.jpeg',
+      '/assets/images/bonita-before-7.jpeg'
     ],
     beforeGallery: [
       '/assets/images/bonita-before-1.jpeg',
-      '/assets/images/bonita-before-2.jpeg'
+      '/assets/images/bonita-before-3.jpeg',
+      '/assets/images/bonita-before-4.jpeg',
+      '/assets/images/bonita-before-5.jpeg',
+      '/assets/images/bonita-before-6.jpeg',
+      '/assets/images/bonita-before-7.jpeg'
     ],
     afterGallery: [
+      '/assets/images/bonita-after-5.jpg',
       '/assets/images/bonita-image-1.jpeg',
-      '/assets/images/bonita-image-4.jpeg'
+      '/assets/images/bonita-image-4.jpeg',
+      '/assets/images/bonita-image-6.jpeg',
+      '/assets/images/bonita-image-9.jpeg',
+      '/assets/images/bonita-after-6.jpg',
+      '/assets/images/bonita-after-7.jpeg',
+      '/assets/images/bonita-after-8.jpg'
+    ],
+    videos: [
+      '/assets/images/bonita-video-1.mp4',
+      '/assets/images/bonita-video-6.mp4',
+      '/assets/images/bonita-video-4.mp4',
+      '/assets/images/bonita-video-5.mp4',
+      '/assets/images/bonita-video-3.mp4'
     ],
     features: [
       'Premium Salon Interiors',
@@ -450,7 +478,13 @@ export const getProjects = () => {
   parsed = parsed.map(p => {
     const initial = INITIAL_PROJECTS.find(ip => ip.id === p.id);
     if (initial) {
-      if (p.category !== initial.category || p.img !== initial.img || p.name !== initial.name) {
+      const hasChanges = Object.keys(initial).some(key => {
+        if (Array.isArray(initial[key])) {
+          return JSON.stringify(p[key]) !== JSON.stringify(initial[key]);
+        }
+        return p[key] !== initial[key];
+      });
+      if (hasChanges) {
         modified = true;
         return { ...p, ...initial };
       }
