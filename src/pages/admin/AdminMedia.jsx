@@ -106,7 +106,7 @@ export default function AdminMedia() {
           />
         </div>
 
-        <div className="admin-media-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))', gap: '2rem' }}>
+        <div className="admin-media-grid">
           {filtered.length === 0 ? (
             <div style={{ gridColumn: 'span 4', textAlign: 'center', padding: '4rem 2rem', color: '#888', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)' }}>
               No media assets found

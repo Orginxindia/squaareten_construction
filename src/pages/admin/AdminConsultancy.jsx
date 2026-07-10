@@ -62,7 +62,7 @@ export default function AdminConsultancy() {
 
         {toast && <div className="admin-toast">{toast}</div>}
 
-        <div className="admin-dashboard-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '2rem', alignItems: 'start' }}>
+        <div className="admin-dashboard-grid" style={{ alignItems: 'start' }}>
           
           {/* General Copy/Texts */}
           <div className="admin-table-card" style={{ padding: '2rem', background: 'var(--color-surface)', border: '1px solid var(--color-border)', borderRadius: 'var(--radius-lg)' }}>

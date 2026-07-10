@@ -2,7 +2,7 @@
    APP ENTRY — Routing & Global Elements
    ============================================================ */
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Lenis from 'lenis';
@@ -36,6 +36,19 @@ import AdminCareers from './pages/admin/AdminCareers';
 import AdminConsultancy from './pages/admin/AdminConsultancy';
 import AdminEnquiries from './pages/admin/AdminEnquiries';
 import AdminMedia from './pages/admin/AdminMedia';
+
+// Helper to render global floating action buttons only on non-admin pages
+function FloatingButtons({ onOpenEstimator }) {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
+  if (isAdmin) return null;
+  return (
+    <>
+      <WhatsAppFAB />
+      <AIAssistant onOpenEstimator={onOpenEstimator} />
+    </>
+  );
+}
 
 export default function App() {
   const [isEstimatorOpen, setIsEstimatorOpen] = useState(false);
@@ -142,9 +155,8 @@ export default function App() {
         {/* Premium Custom Cursor (Desktop only) */}
       <CustomCursor />
 
-      {/* Floating Action Buttons */}
-      <WhatsAppFAB />
-      <AIAssistant onOpenEstimator={() => setIsEstimatorOpen(true)} />
+      {/* Floating Action Buttons (Hidden on Admin Routes) */}
+      <FloatingButtons onOpenEstimator={() => setIsEstimatorOpen(true)} />
 
       {/* Routes */}
       <Routes>

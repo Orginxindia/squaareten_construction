@@ -66,7 +66,7 @@ export default function AdminEnquiries() {
 
         {toast && <div className="admin-toast">{toast}</div>}
 
-        <div className="admin-search-bar" style={{ display: 'flex', gap: '1rem', marginBottom: '1.5rem' }}>
+        <div className="admin-search-bar">
           <div className="admin-search" style={{ flex: 1 }}>
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <circle cx="11" cy="11" r="8" />
@@ -93,7 +93,7 @@ export default function AdminEnquiries() {
           </select>
         </div>
 
-        <div className="admin-dashboard-grid" style={{ display: 'grid', gridTemplateColumns: selectedEnquiry ? '1.2fr 0.8fr' : '1fr', gap: '1.5rem', alignItems: 'start' }}>
+        <div className={`admin-dashboard-grid ${selectedEnquiry ? 'admin-dashboard-grid--split' : ''}`}>
           
           <div className="admin-table-card">
             <div className="admin-table-wrapper">
