@@ -451,6 +451,12 @@ const INITIAL_PROJECTS = [
 ];
 
 export const getProjects = () => {
+  const cacheBustKey = 'admin_projects_cache_bust_v2';
+  if (!localStorage.getItem(cacheBustKey)) {
+    localStorage.removeItem('admin_projects');
+    localStorage.setItem(cacheBustKey, 'true');
+  }
+
   const saved = localStorage.getItem('admin_projects');
   if (!saved) {
     localStorage.setItem('admin_projects', JSON.stringify(INITIAL_PROJECTS));
