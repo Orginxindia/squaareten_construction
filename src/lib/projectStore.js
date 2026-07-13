@@ -334,8 +334,6 @@ const INITIAL_PROJECTS = [
       '/assets/images/bonita-image-6.jpeg',
       '/assets/images/bonita-image-9.jpeg',
       '/assets/images/bonita-after-6.jpg',
-      '/assets/images/bonita-after-7.jpeg',
-      '/assets/images/bonita-after-8.jpg',
       '/assets/images/bonita-before-1.jpeg',
       '/assets/images/bonita-before-3.jpeg',
       '/assets/images/bonita-before-4.jpeg',
@@ -357,9 +355,7 @@ const INITIAL_PROJECTS = [
       '/assets/images/bonita-image-4.jpeg',
       '/assets/images/bonita-image-6.jpeg',
       '/assets/images/bonita-image-9.jpeg',
-      '/assets/images/bonita-after-6.jpg',
-      '/assets/images/bonita-after-7.jpeg',
-      '/assets/images/bonita-after-8.jpg'
+      '/assets/images/bonita-after-6.jpg'
     ],
     videos: [
       '/assets/images/bonita-video-1.mp4',
