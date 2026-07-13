@@ -3,6 +3,7 @@
    ============================================================ */
 import React, { useState, useEffect } from 'react';
 import html2pdf from 'html2pdf.js';
+import { convertSqftToCent } from '../../lib/areaUtils';
 
 export default function InvoiceModal({ booking, plots, onClose }) {
   // Find corresponding plot in layout database
@@ -25,7 +26,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
   const [totalArea, setTotalArea] = useState(matchedPlot?.total_area || 0);
   const [cents, setCents] = useState(() => {
     if (matchedPlot?.total_area) {
-      return (Number(matchedPlot.total_area) / 435.6).toFixed(2);
+      return convertSqftToCent(matchedPlot.total_area);
     }
     return '0.00';
   });
@@ -65,7 +66,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
         setPlotArea(matchedPlot.plot_area || 0);
         setRoadArea(matchedPlot.road_area || 0);
         setTotalArea(matchedPlot.total_area || 0);
-        setCents((Number(matchedPlot.total_area) / 435.6).toFixed(2));
+        setCents(convertSqftToCent(matchedPlot.total_area));
 
         const facingStr = matchedPlot.facing ? `${matchedPlot.facing.toUpperCase()} FACING` : 'EAST FACING';
         const phaseStr = `KARUPPIAH NAGAR PHASE ${String(booking.phase).padStart(2, '0')}`;
@@ -80,7 +81,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
   const handleTotalAreaChange = (val) => {
     setTotalArea(val);
     if (!isNaN(val) && val > 0) {
-      setCents((Number(val) / 435.6).toFixed(2));
+      setCents(convertSqftToCent(val));
     }
   };
 

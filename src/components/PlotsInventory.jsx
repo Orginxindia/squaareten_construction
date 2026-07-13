@@ -5,6 +5,7 @@ import React, { useState, useEffect, useMemo } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { allPlots as phase1Plots, allPlotsPhase2 as phase2Plots } from '../data/karuppiahNagarPlots';
+import { convertSqftToCent } from '../lib/areaUtils';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -102,7 +103,7 @@ export default function PlotsInventory({ activePhase = 1 }) {
                 ) : (
                   <div className="kn-inv__card-row"><span>Road Share</span><strong>-</strong></div>
                 )}
-                <div className="kn-inv__card-row"><span>Land Measure</span><strong>{p.cents}</strong></div>
+                <div className="kn-inv__card-row"><span>Land Measure</span><strong>{convertSqftToCent(p.totalArea)} Cents</strong></div>
                 <div className="kn-inv__card-row"><span>Dimensions</span><strong>{p.dimensions}</strong></div>
               </div>
               {p.status === 'available' && (

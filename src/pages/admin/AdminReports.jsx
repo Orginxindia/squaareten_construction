@@ -5,6 +5,7 @@ import { useState, useEffect, useRef } from 'react';
 import { supabase } from '../../lib/supabaseClient';
 import * as XLSX from 'xlsx';
 import AdminLayout from '../../components/admin/AdminLayout';
+import { convertSqftToCent } from '../../lib/areaUtils';
 
 const REPORT_TYPES = [
   { key: 'available', label: 'Available Plots', filter: p => p.status === 'available', color: '#48bb78' },
@@ -42,7 +43,7 @@ export default function AdminReports() {
       'Dimensions': p.dimensions,
       'Status': p.status.charAt(0).toUpperCase() + p.status.slice(1),
       'Price (₹)': Number(p.total_area) * Number(p.price_per_sqft),
-      'Cents': p.cents,
+      'Cents': convertSqftToCent(p.total_area),
       'Notes': p.notes || '',
     }));
     const ws = XLSX.utils.json_to_sheet(rows);
