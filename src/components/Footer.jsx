@@ -8,6 +8,32 @@ export default function Footer() {
   const isHomePage = location.pathname === '/' || location.pathname === '/index.html';
   const homePrefix = isHomePage ? '' : '/';
 
+  const handleBrochureDownload = (e) => {
+    e.preventDefault();
+    const fileUrl = '/assets/images/brouchure 1.png';
+    const fileName = 'brouchure 1.png';
+    fetch(fileUrl)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      })
+      .catch(() => {
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
+  };
+
   return (
     <footer className="footer" id="footer">
       <div className="container">
@@ -116,7 +142,7 @@ export default function Footer() {
           </div>
 
           <div className="footer__contact-right">
-            <a href="/assets/brochure.pdf" download className="footer__btn-brochure" style={{ marginRight: '12px' }}>
+            <a href="/assets/images/brouchure 1.png" onClick={handleBrochureDownload} download="brouchure 1.png" className="footer__btn-brochure" style={{ marginRight: '12px' }}>
               <span>DOWNLOAD BROCHURE</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

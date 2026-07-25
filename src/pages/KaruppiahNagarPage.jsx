@@ -18,13 +18,32 @@ export default function KaruppiahNagarPage() {
     document.documentElement.classList.remove('is-loading');
   }, []);
 
-  const handleDownloadBrochure = () => {
-    const link = document.createElement('a');
-    link.href = '/assets/karuppiah-nagar-layout.pdf';
-    link.download = 'Karuppiah_Nagar_Layout_Plan.pdf';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
+  const handleDownloadBrochure = (phaseParam) => {
+    const targetPhase = typeof phaseParam === 'number' ? phaseParam : activePhase;
+    const isPhase2 = targetPhase === 2;
+    const fileUrl = isPhase2 ? '/assets/images/phase2.jpeg' : '/assets/Karuppiah_Nagar_Layout_Plan.pdf';
+    const fileName = isPhase2 ? 'phase2.jpeg' : 'Karuppiah_Nagar_Layout_Plan.pdf';
+
+    fetch(fileUrl)
+      .then((res) => res.blob())
+      .then((blob) => {
+        const blobUrl = window.URL.createObjectURL(blob);
+        const link = document.createElement('a');
+        link.href = blobUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(blobUrl);
+      })
+      .catch(() => {
+        const link = document.createElement('a');
+        link.href = fileUrl;
+        link.download = fileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      });
   };
 
   return (
