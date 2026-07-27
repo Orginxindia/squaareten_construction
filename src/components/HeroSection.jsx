@@ -28,8 +28,8 @@ export default function HeroSection({ activePhase = 1, onOpenDownloadModal }) {
       onOpenDownloadModal(activePhase);
     } else {
       const isPhase2 = activePhase === 2;
-      const fileUrl = isPhase2 ? '/assets/images/phase2.jpeg' : '/assets/Karuppiah_Nagar_Layout_Plan.pdf';
-      const fileName = isPhase2 ? 'phase2.jpeg' : 'Karuppiah_Nagar_Layout_Plan.pdf';
+      const fileUrl = isPhase2 ? '/assets/images/phase2.jpeg' : '/assets/KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
+      const fileName = isPhase2 ? 'phase2.jpeg' : 'KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
 
       fetch(fileUrl)
         .then((res) => res.blob())
