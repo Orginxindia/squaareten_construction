@@ -94,16 +94,54 @@ export default function InvoiceModal({ booking, plots, onClose }) {
   // Direct A4 PDF Download using html2pdf.js via standard Blob URL download
   const handleDownloadPDF = () => {
     const element = document.getElementById('printable-quotation-sheet');
+    if (!element) return;
     
+    const fileName = `Quotation_Plot_${booking.plot_number}_${(clientName || 'Client').trim().replace(/\s+/g, '_')}.pdf`;
+
     const opt = {
       margin: 0,
-      filename: `Quotation_Plot_${booking.plot_number}_${(clientName || 'Client').trim().replace(/\s+/g, '_')}.pdf`,
+      filename: fileName,
       image: { type: 'jpeg', quality: 0.98 },
-      html2canvas: { scale: 2, useCORS: true, letterRendering: true, scrollY: 0, scrollX: 0 },
+      html2canvas: {
+        scale: 2,
+        useCORS: true,
+        letterRendering: true,
+        scrollY: 0,
+        scrollX: 0,
+        windowWidth: 1024,
+        onclone: (clonedDoc) => {
+          const clonedSheet = clonedDoc.getElementById('printable-quotation-sheet');
+          if (clonedSheet) {
+            // Reset scale transforms, zoom, and container metrics for standard A4 PDF rendering
+            clonedSheet.style.transform = 'none';
+            clonedSheet.style.zoom = '1';
+            clonedSheet.style.width = '210mm';
+            clonedSheet.style.minHeight = '297mm';
+            clonedSheet.style.padding = '35px 45px';
+            clonedSheet.style.margin = '0 auto';
+            clonedSheet.style.boxShadow = 'none';
+            clonedSheet.style.boxSizing = 'border-box';
+            clonedSheet.style.display = 'flex';
+            clonedSheet.style.flexDirection = 'column';
+
+            // Reset parents in cloned DOM to avoid clipping or transform scaling
+            let parent = clonedSheet.parentElement;
+            while (parent && parent !== clonedDoc.body) {
+              parent.style.transform = 'none';
+              parent.style.zoom = '1';
+              parent.style.width = 'auto';
+              parent.style.maxWidth = 'none';
+              parent.style.margin = '0';
+              parent.style.padding = '0';
+              parent.style.overflow = 'visible';
+              parent = parent.parentElement;
+            }
+          }
+        }
+      },
       jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
     };
 
-    // Output PDF as blob and trigger standard download to avoid base64 data URIs which browsers block/corrupt
     html2pdf()
       .from(element)
       .set(opt)
@@ -114,7 +152,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url;
-        a.download = `Quotation_Plot_${booking.plot_number}_${(clientName || 'Client').trim().replace(/\s+/g, '_')}.pdf`;
+        a.download = fileName;
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
@@ -332,7 +370,8 @@ export default function InvoiceModal({ booking, plots, onClose }) {
 
         {/* Right Side: Live Printable A4 Quotation Page */}
         <div className="invoice-preview-container">
-          <div className="invoice-a4-page" id="printable-quotation-sheet">
+          <div className="invoice-a4-scaler">
+            <div className="invoice-a4-page" id="printable-quotation-sheet">
             
             {/* Header section matching exact layout */}
             <div className="invoice-header-section">
@@ -491,6 +530,7 @@ export default function InvoiceModal({ booking, plots, onClose }) {
               116/294 J, VIJAYASEKARAN STREET, KANMAIKARAI, ARAPALYAM, MADURAI – 625016.
             </div>
 
+            </div>
           </div>
         </div>
 
