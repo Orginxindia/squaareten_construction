@@ -187,6 +187,30 @@ const DISTRICTS_DATA = [
     projectName: 'Tenkasi Future Project',
     projectType: 'Future Township',
     status: 'upcoming'
+  },
+  {
+    id: 'krishnagiri',
+    name: 'Krishnagiri',
+    lat: 12.5266,
+    lng: 78.2146,
+    completed: 12,
+    ongoing: 3,
+    categories: ['Residential', 'Commercial', 'Plots', 'Turnkey'],
+    projectName: 'Krishnagiri Industrial & Residential Hub',
+    projectType: 'Residential & Commercial Project',
+    status: 'ongoing'
+  },
+  {
+    id: 'karaikudi',
+    name: 'Karaikudi',
+    lat: 10.0735,
+    lng: 78.7732,
+    completed: 18,
+    ongoing: 4,
+    categories: ['Residential', 'Heritage Villas', 'Interiors', 'Consulting'],
+    projectName: 'Karaikudi Heritage Enclave',
+    projectType: 'Heritage Villa & Residential Estate',
+    status: 'completed'
   }
 ];
 
