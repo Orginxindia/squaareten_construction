@@ -2,6 +2,7 @@
    FOOTER — Site Footer
    ============================================================ */
 import { Link, useLocation } from 'react-router-dom';
+import karuppiahNagarBrochurePdf from '../assets/KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
 export default function Footer() {
   const location = useLocation();
@@ -10,8 +11,8 @@ export default function Footer() {
 
   const handleBrochureDownload = (e) => {
     e.preventDefault();
-    const fileUrl = '/assets/images/brouchure 1.png';
-    const fileName = 'brouchure 1.png';
+    const fileUrl = karuppiahNagarBrochurePdf;
+    const fileName = 'KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
     fetch(fileUrl)
       .then((res) => res.blob())
       .then((blob) => {
@@ -142,7 +143,7 @@ export default function Footer() {
           </div>
 
           <div className="footer__contact-right">
-            <a href="/assets/images/brouchure 1.png" onClick={handleBrochureDownload} download="brouchure 1.png" className="footer__btn-brochure" style={{ marginRight: '12px' }}>
+            <a href={karuppiahNagarBrochurePdf} onClick={handleBrochureDownload} download="KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf" className="footer__btn-brochure" style={{ marginRight: '12px' }}>
               <span>DOWNLOAD BROCHURE</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />

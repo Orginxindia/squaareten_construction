@@ -2,9 +2,10 @@
    DOCUMENT MODAL — PDF download modal
    ============================================================ */
 import React, { useState } from 'react';
+import karuppiahNagarBrochurePdf from '../assets/KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
-const PDF_PATH = '/assets/KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
-const PDF_FILENAME = 'KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
+const PDF_PATH = karuppiahNagarBrochurePdf;
+const PDF_FILENAME = 'KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
 export default function DocumentModal() {
   const [isOpen, setIsOpen] = useState(false);
@@ -71,7 +72,7 @@ export default function DocumentModal() {
                 <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8Z" />
                 <polyline points="14,2 14,8 20,8" />
               </svg>
-              <span>KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf</span>
+              <span>KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf</span>
             </div>
             <button
               onClick={handleDownload}

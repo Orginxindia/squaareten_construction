@@ -9,6 +9,7 @@ import ProjectGallery from '../components/ProjectGallery';
 import WhyInvest from '../components/WhyInvest';
 import DocumentModal from '../components/DocumentModal';
 import CTASection from '../components/CTASection';
+import karuppiahNagarBrochurePdf from '../assets/KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
 export default function KaruppiahNagarPage() {
   const [activePhase, setActivePhase] = useState(2); // Set default to Phase 2 to match mockup
@@ -18,11 +19,9 @@ export default function KaruppiahNagarPage() {
     document.documentElement.classList.remove('is-loading');
   }, []);
 
-  const handleDownloadBrochure = (phaseParam) => {
-    const targetPhase = typeof phaseParam === 'number' ? phaseParam : activePhase;
-    const isPhase2 = targetPhase === 2;
-    const fileUrl = isPhase2 ? '/assets/images/phase2.jpeg' : '/assets/KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
-    const fileName = isPhase2 ? 'phase2.jpeg' : 'KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
+  const handleDownloadBrochure = () => {
+    const fileUrl = karuppiahNagarBrochurePdf;
+    const fileName = 'KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
     fetch(fileUrl)
       .then((res) => res.blob())

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import karuppiahNagarBrochurePdf from '../assets/KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -27,9 +28,8 @@ export default function LocationMap({ activePhase = 1, onOpenDownloadModal }) {
     if (onOpenDownloadModal) {
       onOpenDownloadModal(activePhase);
     } else {
-      const isPhase2 = activePhase === 2;
-      const fileUrl = isPhase2 ? '/assets/images/phase2.jpeg' : '/assets/KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
-      const fileName = isPhase2 ? 'phase2.jpeg' : 'KARUPPIAH NAGAR LAYOUT UPDATED (27-07-2026).pdf';
+      const fileUrl = karuppiahNagarBrochurePdf;
+      const fileName = 'KARUPPIAH NAGAR LAYOUT FINAL UPDATED (27-07-2026).pdf';
 
       fetch(fileUrl)
         .then((res) => res.blob())
