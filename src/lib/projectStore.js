@@ -201,14 +201,18 @@ const INITIAL_PROJECTS = [
     location: 'Sedapatti, Madurai',
     category: 'residential',
     status: 'Ongoing',
-    img: '/assets/images/sedapaaty-residence.png',
+    img: '/assets/images/sedapaaty-residence-1.jpg',
     description: 'A premium contemporary double-story residential villa combining modern architectural aesthetics, warm exterior cove lighting, a private garage, and landscaped details.',
     area: '3,500 sq.ft',
     progress: 30,
     phase: 'Foundation & Ground Work',
     expectedCompletion: 'August 2027',
     story: 'Sedapaaty Residence stands as an upcoming masterpiece of modern residential architecture by Squaareten Construction in Sedapatti, Madurai. The design features a striking double-story structure with a private garage, bespoke wooden cladding highlights, glass balconies, and elegant perimeter boundary lighting. Emphasizing premium construction standards, this villa is designed to merge visual luxury with modern structural durability. The project is currently in the initial construction phase, making steady progress towards completion.',
-    gallery: ['/assets/images/sedapaaty-residence.png'],
+    gallery: [
+      '/assets/images/sedapaaty-residence-1.jpg',
+      '/assets/images/sedapaaty-residence-2.jpg',
+      '/assets/images/sedapaaty-residence-3.jpg'
+    ],
     features: [
       'Premium Double-Story Design',
       'Private Garage Space',

@@ -494,7 +494,7 @@ export default function ProjectDetailPage() {
           </div>
 
           {/* Optional sections (Before/After & Videos) */}
-          {project.category !== 'plots' && (project.beforeGallery || (project.gallery && project.gallery.length > 1)) && (
+          {project.category !== 'plots' && project.beforeGallery && project.beforeGallery.length > 0 && (
             <div style={{ marginTop: '80px', borderTop: '1px solid rgba(255, 255, 255, 0.08)', paddingTop: '50px' }}>
               <span className="section__label" style={{ color: '#C9A96E', fontSize: '0.75rem', fontWeight: '600', textTransform: 'uppercase', letterSpacing: '0.15em', display: 'block', marginBottom: '15px' }}>The Transformation</span>
               <h2 style={{ fontSize: '2rem', fontFamily: 'var(--font-heading)', color: '#FFFFFF', marginBottom: '30px', fontStyle: 'italic' }}>Before &amp; After Comparison</h2>
@@ -502,14 +502,14 @@ export default function ProjectDetailPage() {
                 <div className="pd-comparison__column">
                   <div className="pd-comparison__badge pd-comparison__badge--before">Before</div>
                   <AutoCarousel 
-                    images={project.beforeGallery || (project.gallery && project.gallery.length > 1 ? [project.gallery[1]] : [project.img])} 
+                    images={project.beforeGallery} 
                     title={`${project.name} - Before`} 
                   />
                 </div>
                 <div className="pd-comparison__column">
                   <div className="pd-comparison__badge pd-comparison__badge--after">After</div>
                   <AutoCarousel 
-                    images={project.afterGallery || (project.gallery && project.gallery.length > 0 ? [project.gallery[0]] : [project.img])} 
+                    images={project.afterGallery || [project.img]} 
                     title={`${project.name} - After`} 
                   />
                 </div>
