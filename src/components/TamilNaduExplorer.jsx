@@ -212,7 +212,6 @@ const DISTRICTS_DATA = [
     projectType: 'Heritage Villa & Residential Estate',
     status: 'completed'
   }
-
 ];
 
 export default function TamilNaduExplorer() {
