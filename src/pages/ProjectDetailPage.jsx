@@ -201,9 +201,10 @@ export default function ProjectDetailPage() {
   useEffect(() => {
     if (!lightboxOpen) return;
     const handleKey = (e) => {
+      const gLen = project?.gallery?.length || 1;
       if (e.key === 'Escape') setLightboxOpen(false);
-      if (e.key === 'ArrowLeft') setLightboxIndex(prev => (prev - 1 + project.gallery.length) % project.gallery.length);
-      if (e.key === 'ArrowRight') setLightboxIndex(prev => (prev + 1) % project.gallery.length);
+      if (e.key === 'ArrowLeft') setLightboxIndex(prev => (prev - 1 + gLen) % gLen);
+      if (e.key === 'ArrowRight') setLightboxIndex(prev => (prev + 1) % gLen);
     };
     document.addEventListener('keydown', handleKey);
     document.body.style.overflow = 'hidden';

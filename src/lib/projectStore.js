@@ -377,6 +377,38 @@ const INITIAL_PROJECTS = [
     mapUrl: 'https://www.google.com/maps/place/BONITAA+SKIN+AND+HAIR+CARE/@9.9238552,78.0175391,13z/data=!4m10!1m2!2m1!1smap+bonitaa+bypass+madurai!3m6!1s0x3b00cfd1cca47ce9:0x12c89ce66c58650a!8m2!3d9.9238552!4d78.0937568?entry=ttu',
   },
   {
+    id: 'bonitaa-pollachi',
+    name: 'Bonitaa Skin & Hair Care - Pollachi',
+    location: 'Pollachi, Coimbatore District, Tamil Nadu',
+    category: 'interiors',
+    status: 'Completed',
+    img: '/assets/images/bonita-pollachi-reception.jpg',
+    description: 'Comprehensive turnkey clinic interior design and completion for Bonitaa Skin and Hair Care in Pollachi. Features a signature curved reception desk with brass accents, backlit acrylic logo panel, marble product display shelving, and modern patient lounges.',
+    area: '1,850 sq.ft',
+    year: '2026',
+    story: 'We are pleased to have successfully delivered and launched the brand-new franchise clinic for M/s. Bonitaa Skin and Hair Care in Pollachi, Coimbatore District. Executed from concept to completion by Squaareten Construction Pvt. Ltd., this completed interior project highlights the clinic brand\'s elevated aesthetic. The space features an executive curved reception counter with warm brass trimming and bottom cove lighting, illuminated marble backdrop shelving, private consulting suites, acoustic glass partition doors, and continuous ceiling cove lighting with rich wooden flooring.',
+    gallery: [
+      '/assets/images/bonita-pollachi-reception.jpg',
+      '/assets/images/bonita-pollachi-facade.jpg',
+      '/assets/images/bonita-pollachi-corridor.jpg',
+      '/assets/images/bonita-pollachi-wall-framing.jpg'
+    ],
+    videos: [
+      '/assets/images/bonita-pollachi-video.mp4',
+      '/assets/images/bonita-pollachi-video-2.mp4'
+    ],
+    features: [
+      'Turnkey Clinic Interior Completion',
+      'Curved Reception Desk with Brass Trims',
+      'Backlit 3D Acrylic Bonitaa Brand Wall',
+      'Marble-Finish Floating Display Racks',
+      'Continuous False Ceiling Cove Illumination',
+      'Acoustic Glass Partition Consulting Suites',
+      'Commercial Exterior Illuminated LED Facade Signage'
+    ],
+    mapUrl: 'https://www.google.com/maps/place/Pollachi,+Tamil+Nadu/@10.6609,77.0048,14z'
+  },
+  {
     id: 'bonitaa-tiruvallur',
     name: 'Bonitaa Hair & Skin Care - Tiruvallur',
     location: 'Tiruvallur District, Tamil Nadu',
@@ -404,6 +436,63 @@ const INITIAL_PROJECTS = [
       'Specialised Treatment Rooms',
       'Consulting & Discussion Areas'
     ]
+  },
+  {
+    id: 'bonitaa-ambattur',
+    name: 'Bonitaa Skin & Hair Care - Ambattur',
+    location: 'Ambattur, Chennai, Tamil Nadu',
+    category: 'interiors',
+    status: 'Ongoing',
+    img: '/assets/images/bonita-ambattur-interior.jpg',
+    description: 'Ongoing turnkey clinical interior design and execution for M/s. Bonitaa Skin and Hair Care in Ambattur, Chennai. Features a complete 3D conceptual floor plan, luxury curved reception, consulting suites, laser procedure rooms, and an operation theatre.',
+    area: '2,800 sq.ft',
+    progress: 30,
+    phase: '3D Floor Plan & Site Execution',
+    expectedCompletion: 'December 2026',
+    story: 'Squaareten Construction is proud to manage and execute the turnkey interior architecture for M/s. Bonitaa Skin and Hair Care\'s new franchise location at Ambattur, Chennai. Following our comprehensive 3D Conceptual Floor Plan (Option-05 / Drg No. AR-01), the facility features an executive 16\'0" x 16\'0" reception hall, two specialized doctor consulting suites, dedicated laser procedure and recovery rooms, an operation theatre (O.T.), and state-of-the-art treatment cabins. The interior design pairs clinical sterility with warmth — contoured backlit curved wall accents, modern floating product shelves, concealed acoustic partitions, and custom lighting.',
+    gallery: [
+      '/assets/images/bonita-ambattur-interior.jpg',
+      '/assets/images/bonita-ambattur-3d-plan.jpg'
+    ],
+    videos: [
+      '/assets/images/bonita-ambattur-video.mp4'
+    ],
+    features: [
+      'Conceptual 3D Clinic Floor Layout',
+      'Curved Backlit Wall Feature & Logo Wall',
+      'Executive Reception & Waiting Lounge',
+      '2 Dedicated Doctor Consulting Rooms',
+      'Specialized Laser & Treatment Rooms',
+      'Operation Theatre (O.T.) & Recovery Room',
+      'Concealed Electrical & Acoustic Partitions'
+    ],
+    mapUrl: 'https://www.google.com/maps/place/Ambattur,+Chennai,+Tamil+Nadu/@13.1143,80.1548,14z'
+  },
+  {
+    id: 'bonitaa-karaikudi',
+    name: 'Bonitaa Skin & Hair Care - Karaikudi',
+    location: 'Karaikudi, Sivaganga District, Tamil Nadu',
+    category: 'interiors',
+    status: 'Ongoing',
+    img: '/assets/images/bonita-karaikudi-consulting.jpg',
+    description: 'Ongoing turnkey clinical interior design and execution for M/s. Bonitaa Skin and Hair Care in Karaikudi. Features custom curved doctor consultation desks, dual-tier sculpted wave feature walls with integrated LED floating shelves, and advanced treatment infrastructure.',
+    area: '1,800 sq.ft',
+    progress: 40,
+    phase: 'Cabinetry & Custom Curved Paneling',
+    expectedCompletion: 'January 2027',
+    story: 'Squaareten Construction is actively executing the turnkey clinical interior architecture for Bonitaa Skin & Hair Care\'s franchise branch in Karaikudi, Sivaganga District. Designed with patient serenity and clinical ergonomics in mind, the space features a signature doctor consultation chamber with a seamless curved-edge executive desk, a sculpted dual-tier wave feature wall with embedded warm LED shelf lighting, modular medical-grade storage units, and centralized climate control. Every fixture is tailored to Bonitaa\'s premium wellness aesthetic.',
+    gallery: [
+      '/assets/images/bonita-karaikudi-consulting.jpg'
+    ],
+    features: [
+      'Custom Curved Doctor Consultation Desk',
+      'Dual-Tier Sculpted Wave Feature Wall',
+      'Integrated Warm LED Floating Display Shelves',
+      'Modular Medical-Grade Cabinetry & Soft-Close Drawers',
+      'Dedicated Treatment & Patient Consultation Suites',
+      'Climate-Controlled & Concealed Electrical Routing'
+    ],
+    mapUrl: 'https://www.google.com/maps/place/Karaikudi,+Tamil+Nadu/@10.0683,78.7804,14z'
   },
   {
     id: 'karuppiah-nagar',
