@@ -275,8 +275,7 @@ export const projectsData = [
       '/assets/images/bonita-pollachi-wall-framing.jpg'
     ],
     videos: [
-      '/assets/images/bonita-pollachi-video.mp4',
-      '/assets/images/bonita-pollachi-video-2.mp4'
+      '/assets/images/bonita-pollachi-video.mp4'
     ],
     features: [
       'Turnkey Clinic Interior Completion',
@@ -403,6 +402,9 @@ export const projectsData = [
     story: 'Squaareten Construction is actively executing the turnkey clinical interior architecture for Bonitaa Skin & Hair Care\'s franchise branch in Karaikudi, Sivaganga District. Designed with patient serenity and clinical ergonomics in mind, the space features a signature doctor consultation chamber with a seamless curved-edge executive desk, a sculpted dual-tier wave feature wall with embedded warm LED shelf lighting, modular medical-grade storage units, and centralized climate control. Every fixture is tailored to Bonitaa\'s premium wellness aesthetic.',
     gallery: [
       '/assets/images/bonita-karaikudi-consulting.jpg'
+    ],
+    videos: [
+      '/assets/images/bonita-pollachi-video-2.mp4'
     ],
     features: [
       'Custom Curved Doctor Consultation Desk',
